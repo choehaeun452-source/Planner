@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
@@ -159,15 +160,58 @@
     transition: color 0.2s;
   }
   .drawer-close:hover { color: var(--text-dark); }
-  .drawer-goal-section { padding: 10px 16px 6px; }
-  .drawer-goal-name {
-    font-size: 12px; font-weight: 700; color: var(--green-deep);
-    margin-bottom: 8px; display: flex; align-items: center; gap: 6px;
+  .drawer-goal-section { padding: 6px 16px; }
+  .drawer-goal-toggle {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 12px; border-radius: var(--radius-sm);
+    cursor: pointer; transition: background 0.15s;
+    font-size: 13px; font-weight: 700; color: var(--green-deep);
+    user-select: none;
   }
-  .drawer-goal-name::before {
+  .drawer-goal-toggle:hover { background: var(--green-pale); }
+  .drawer-goal-toggle-left { display: flex; align-items: center; gap: 8px; }
+  .drawer-goal-toggle-left::before {
     content: ''; display: inline-block;
     width: 7px; height: 7px; background: var(--green-mid); border-radius: 50%;
   }
+  .drawer-toggle-arrow {
+    font-size: 11px; color: var(--gray-3);
+    transition: transform 0.2s;
+  }
+  .drawer-toggle-arrow.open { transform: rotate(180deg); }
+  .drawer-sub-list {
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.25s ease;
+  }
+  .drawer-sub-list.open { max-height: 600px; }
+
+  /* 직접 입력 영역 */
+  .drawer-direct-section {
+    padding: 10px 16px 14px;
+    border-top: 1px solid var(--gray-2);
+    margin-top: 4px;
+  }
+  .drawer-direct-label {
+    font-size: 11px; font-weight: 700; color: var(--gray-3);
+    letter-spacing: 0.06em; text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .drawer-direct-row { display: flex; gap: 8px; }
+  .drawer-direct-input {
+    flex: 1; background: var(--gray-1); border: 1.5px solid var(--gray-2);
+    border-radius: var(--radius-sm); padding: 10px 13px;
+    font-size: 14px; font-family: 'Apple SD Gothic Neo','Noto Sans KR',sans-serif;
+    color: var(--text-dark); outline: none; transition: border-color 0.2s;
+  }
+  .drawer-direct-input:focus { border-color: var(--green-mid); background: var(--white); }
+  .drawer-direct-btn {
+    width: 42px; height: 42px; background: var(--green-deep); border: none;
+    border-radius: var(--radius-sm); color: white; font-size: 20px;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; transition: background 0.2s;
+  }
+  .drawer-direct-btn:hover { background: #155e38; }
   .drawer-sub-item {
     display: flex; align-items: center; gap: 10px;
     padding: 10px 12px; border-radius: var(--radius-sm);
@@ -472,10 +516,12 @@
     padding: 3px 9px; border-radius: 20px; font-weight: 500; white-space: nowrap;
   }
 </style>
+
 </head>
 <body>
 
 <!-- DAILY -->
+
 <div id="daily-screen" class="screen active">
   <div class="screen-header">
     <button class="cal-icon-btn" onclick="showCalendar()" title="달력">📅</button>
@@ -488,30 +534,41 @@
     <div class="date-big" id="today-date">27</div>
     <div class="date-day" id="today-day">금요일 · 3월 2026</div>
 
-    <div class="daily-tasks-box" id="daily-tasks-box">
-      <div class="daily-box-header">
-        <span class="box-label">오늘의 학습</span>
-        <button class="add-task-btn" id="add-task-btn" onclick="toggleDrawer(event)" title="세부 목표 추가">+</button>
-      </div>
-      <div id="daily-task-list"></div>
-      <div id="daily-empty" class="empty-hint">
-        <span class="icon">📚</span>
-        오른쪽 <strong style="color:var(--green-deep)">+</strong> 버튼으로<br>오늘의 세부 목표를 추가해보세요
-      </div>
+```
+<div class="daily-tasks-box" id="daily-tasks-box">
+  <div class="daily-box-header">
+    <span class="box-label">오늘의 학습</span>
+    <button class="add-task-btn" id="add-task-btn" onclick="toggleDrawer(event)" title="세부 목표 추가">+</button>
+  </div>
+  <div id="daily-task-list"></div>
+  <div id="daily-empty" class="empty-hint">
+    <span class="icon">📚</span>
+    오른쪽 <strong style="color:var(--green-deep)">+</strong> 버튼으로<br>오늘의 세부 목표를 추가해보세요
+  </div>
 
-      <!-- Drawer -->
-      <div class="subtask-drawer" id="subtask-drawer">
-        <div class="drawer-header">
-          <span class="drawer-title">세부 목표 선택</span>
-          <button class="drawer-close" onclick="closeDrawer()">✕</button>
-        </div>
-        <div id="drawer-content"></div>
+  <!-- Drawer -->
+  <div class="subtask-drawer" id="subtask-drawer">
+    <div class="drawer-header">
+      <span class="drawer-title">오늘 학습 추가</span>
+      <button class="drawer-close" onclick="closeDrawer()">✕</button>
+    </div>
+    <div id="drawer-content"></div>
+    <div class="drawer-direct-section">
+      <div class="drawer-direct-label">직접 입력</div>
+      <div class="drawer-direct-row">
+        <input class="drawer-direct-input" id="drawer-direct-input" type="text" placeholder="직접 입력하기">
+        <button class="drawer-direct-btn" onclick="addDirectTask()">+</button>
       </div>
     </div>
   </div>
 </div>
+```
+
+  </div>
+</div>
 
 <!-- CALENDAR -->
+
 <div id="calendar-screen" class="screen">
   <div class="screen-header">
     <button class="back-btn" onclick="showDaily()">← 돌아가기</button>
@@ -526,6 +583,7 @@
 </div>
 
 <!-- DAY RECORD -->
+
 <div id="dayrecord-screen" class="screen">
   <div class="screen-header">
     <button class="back-btn" onclick="showCalendar()">← 달력</button>
@@ -538,6 +596,7 @@
 </div>
 
 <!-- MONTHLY -->
+
 <div id="monthly-screen" class="screen">
   <div class="screen-header">
     <button class="month-btn" onclick="showDaily()">
@@ -568,6 +627,7 @@
 </div>
 
 <!-- DETAIL -->
+
 <div id="detail-screen" class="screen">
   <div class="screen-header">
     <button class="back-btn" onclick="showMonthly()">← 돌아가기</button>
@@ -584,6 +644,7 @@
 </div>
 
 <!-- MODAL: Add/Edit Goal -->
+
 <div class="modal-overlay" id="goal-modal" onclick="closeGoalModal(event)">
   <div class="modal-sheet">
     <div class="modal-title" id="goal-modal-title">새 목표 추가</div>
@@ -594,6 +655,7 @@
 </div>
 
 <!-- MODAL: Delete Confirm -->
+
 <div class="modal-overlay" id="delete-modal" onclick="closeDeleteModal(event)">
   <div class="modal-sheet">
     <div class="modal-title" id="delete-modal-title">목표 삭제</div>
@@ -606,6 +668,7 @@
 </div>
 
 <!-- MODAL: 이전 달 목표 이어가기 -->
+
 <div class="modal-overlay" id="carryover-modal">
   <div class="modal-sheet">
     <div class="modal-title" id="carryover-title">이전 달 목표 가져오기</div>
@@ -819,6 +882,8 @@ function outsideDrawerClick(e) {
   const btn = document.getElementById('add-task-btn');
   if (!drawer.contains(e.target) && e.target !== btn) closeDrawer();
 }
+let drawerOpenSections = new Set(); // 토글 열린 섹션 id 관리
+
 function renderDrawer() {
   const content = document.getElementById('drawer-content');
   content.innerHTML = '';
@@ -827,12 +892,32 @@ function renderDrawer() {
     const avail = goal.subtasks.filter(s => !s.done);
     if (avail.length === 0) return;
     anyItem = true;
+    const isOpen = drawerOpenSections.has(goal.id);
     const sec = document.createElement('div');
     sec.className = 'drawer-goal-section';
-    const nameEl = document.createElement('div');
-    nameEl.className = 'drawer-goal-name';
-    nameEl.textContent = goal.name;
-    sec.appendChild(nameEl);
+
+    // 토글 헤더
+    const toggle = document.createElement('div');
+    toggle.className = 'drawer-goal-toggle';
+    const added = avail.filter(s => dailyAddedKeys.has(goal.id + '_' + s.id)).length;
+    toggle.innerHTML = `
+      <span class="drawer-goal-toggle-left">${goal.name}</span>
+      <span style="display:flex;align-items:center;gap:6px;">
+        ${added > 0 ? `<span style="font-size:11px;color:var(--green-deep);font-weight:600;">${added}개 추가됨</span>` : ''}
+        <span class="drawer-toggle-arrow ${isOpen ? 'open' : ''}">▼</span>
+      </span>
+    `;
+    toggle.onclick = (e) => {
+      e.stopPropagation();
+      if (drawerOpenSections.has(goal.id)) drawerOpenSections.delete(goal.id);
+      else drawerOpenSections.add(goal.id);
+      renderDrawer();
+    };
+    sec.appendChild(toggle);
+
+    // 세부 목표 리스트 (토글)
+    const subList = document.createElement('div');
+    subList.className = 'drawer-sub-list' + (isOpen ? ' open' : '');
     avail.forEach(sub => {
       const key = goal.id + '_' + sub.id;
       const item = document.createElement('div');
@@ -842,13 +927,30 @@ function renderDrawer() {
       if (!isAdded) {
         item.onclick = (e) => { e.stopPropagation(); addDailyTask(goal, sub, key, item); };
       }
-      sec.appendChild(item);
+      subList.appendChild(item);
     });
+    sec.appendChild(subList);
     content.appendChild(sec);
   });
   if (!anyItem) {
-    content.innerHTML = '<div class="drawer-empty">추가할 세부 목표가 없어요</div>';
+    content.innerHTML = '<div class="drawer-empty">세부 목표를 먼저 추가해보세요</div>';
   }
+}
+
+function addDirectTask() {
+  const input = document.getElementById('drawer-direct-input');
+  const text = input.value.trim();
+  if (!text) return;
+  dailyTasks.push({
+    id: dailyTaskNextId++,
+    text: text,
+    tag: '',
+    goalId: null,
+    subtaskId: null,
+    done: false
+  });
+  input.value = '';
+  renderDailyTasks(); saveData(); saveHistory();
 }
 
 // DAILY
@@ -883,8 +985,10 @@ function addDailyTask(goal, sub, key, itemEl) {
 function removeDailyTask(taskId) {
   const task = dailyTasks.find(t => t.id === taskId);
   if (!task) return;
-  const key = task.goalId + '_' + task.subtaskId;
-  dailyAddedKeys.delete(key);
+  if (task.goalId !== null) {
+    const key = task.goalId + '_' + task.subtaskId;
+    dailyAddedKeys.delete(key);
+  }
   dailyTasks = dailyTasks.filter(t => t.id !== taskId);
   renderDailyTasks(); saveData(); saveHistory();
 }
@@ -1048,6 +1152,7 @@ function addSubtask() {
 }
 document.getElementById('subtask-input').addEventListener('keydown', e => { if (e.key === 'Enter') addSubtask(); });
 document.getElementById('goal-modal-name').addEventListener('keydown', e => { if (e.key === 'Enter') submitGoalModal(); });
+document.getElementById('drawer-direct-input').addEventListener('keydown', e => { if (e.key === 'Enter') addDirectTask(); });
 
 // CALENDAR & DAY HISTORY
 const STORAGE_KEY_HISTORY = 'sp_history'; // { "2026-3-27": [{text,tag,done}, ...] }
@@ -1141,6 +1246,7 @@ function showDayRecord(day, key, isToday) {
 
 init();
 </script>
+
 <script>
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
@@ -1150,5 +1256,6 @@ if ('serviceWorker' in navigator) {
   });
 }
 </script>
+
 </body>
 </html>
