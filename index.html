@@ -3,15 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="학습 플래너">
-<meta name="theme-color" content="#1a7a4a">
-<link rel="manifest" href="manifest.json">
-<link rel="apple-touch-icon" href="icon-192.png">
 <title>학습 플래너</title>
-
 <style>
   :root {
     --green-deep: #1a7a4a;
@@ -30,425 +22,333 @@
     --radius-sm: 12px;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+  
+  /* 화면 전체 높이 고정 (내부 스크롤을 위함) */
+  body, html {
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
     background: var(--gray-1);
     color: var(--text-dark);
-    min-height: 100vh;
-    display: flex; align-items: stretch; justify-content: center;
-    padding: 0;
   }
 
-  /* SCREENS */
   .screen {
-    display: none; width: 100%; max-width: 500px; min-height: 100vh;
-    background: var(--white); border-radius: 0;
-    overflow: hidden; position: relative; flex-direction: column;
+    display: none;
+    width: 100%;
+    max-width: 500px;
+    height: 100vh; /* 화면 높이 고정 */
+    margin: 0 auto;
+    background: var(--white);
+    flex-direction: column;
   }
   .screen.active { display: flex; }
 
   /* HEADER */
-  .screen-header { padding: 48px 28px 16px; background: var(--white); position: relative; }
+  .screen-header { padding: 48px 28px 16px; background: var(--white); flex-shrink: 0; }
   .month-btn {
-    font-family: 'Georgia', 'Times New Roman', serif; font-size: 28px;
+    font-family: 'Georgia', serif; font-size: 28px;
     color: var(--text-dark); background: none; border: none;
-    cursor: pointer; display: flex; align-items: center; gap: 8px; padding: 0;
-    transition: color 0.2s;
+    cursor: pointer; display: flex; align-items: center; gap: 8px;
   }
-  .month-btn:hover { color: var(--green-deep); }
   .month-btn .arrow {
     width: 22px; height: 22px; background: var(--green-pale); border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
-    font-size: 11px; color: var(--green-deep); transition: background 0.2s;
-  }
-  .month-btn:hover .arrow { background: var(--green-light); }
-  .header-sub { font-size: 13px; color: var(--gray-3); margin-top: 4px; font-weight: 300; }
-
-  /* DAILY */
-  #daily-screen .screen-content {
-    flex: 1; padding: 0 22px 30px;
-    overflow-y: auto; scrollbar-width: none;
-  }
-  #daily-screen .screen-content::-webkit-scrollbar { display: none; }
-  .date-big {
-    font-family: 'Georgia', 'Times New Roman', serif; font-size: 72px;
-    line-height: 1; color: var(--text-dark); letter-spacing: -2px; margin-bottom: 4px;
-  }
-  .date-day { font-size: 14px; color: var(--gray-3); font-weight: 300; margin-bottom: 20px; }
-
-  .daily-tasks-box {
-    background: var(--gray-1); border-radius: var(--radius);
-    padding: 18px; 
-    border: 1.5px dashed var(--gray-2); position: relative;
-    max-height: 55vh; display: flex; flex-direction: column;
-  }
-  #daily-task-list {
-    overflow-y: auto; scrollbar-width: none; flex: 1;
-  }
-  #daily-task-list::-webkit-scrollbar { display: none; }
-  .daily-box-header {
-    display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;
-  }
-  .box-label {
-    font-size: 11px; font-weight: 700; color: var(--gray-3);
-    letter-spacing: 0.08em; text-transform: uppercase;
-  }
-  .add-task-btn {
-    width: 28px; height: 28px; background: var(--green-deep); border: none;
-    border-radius: 50%; color: white; font-size: 20px; line-height: 1;
-    cursor: pointer; display: flex; align-items: center; justify-content: center;
-    transition: all 0.2s; flex-shrink: 0; font-weight: 300;
-  }
-  .add-task-btn:hover { background: #155e38; transform: scale(1.08); }
-
-  .daily-task-item {
-    background: var(--white); border-radius: var(--radius-sm);
-    margin-bottom: 9px;
-    box-shadow: var(--shadow-card); animation: slideIn 0.25s ease;
-    overflow: hidden;
-  }
-  @keyframes slideIn {
-    from { opacity: 0; transform: translateY(-6px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  .daily-task-check {
-    width: 22px; height: 22px; border-radius: 50%;
-    border: 2px solid var(--green-mid); flex-shrink: 0;
-    display: flex; align-items: center; justify-content: center;
-    cursor: pointer; transition: all 0.2s;
-  }
-  .daily-task-check.done { background: var(--green-mid); border-color: var(--green-mid); }
-  .daily-task-check.done::after { content: '✓'; color: white; font-size: 12px; font-weight: 700; }
-  .daily-task-text { font-size: 14px; flex: 1; }
-  .daily-task-text.done { text-decoration: line-through; color: var(--gray-3); }
-  .daily-task-remove {
-    background: none; border: none; cursor: pointer;
-    color: var(--gray-3); font-size: 15px; padding: 0 4px;
-    transition: color 0.15s; flex-shrink: 0;
-  }
-  .daily-task-remove:hover { color: var(--red); }
-
-  /* TIMER EXPAND */
-  .task-expand {
-    border-top: 1px solid var(--gray-2);
-    padding: 12px 14px 14px;
-    display: none;
-  }
-  .task-expand.open { display: block; }
-  .timer-display {
-    display: flex; align-items: center; gap: 14px; margin-bottom: 12px;
-  }
-  .timer-circle {
-    position: relative; width: 64px; height: 64px; flex-shrink: 0;
-  }
-  .timer-svg { transform: rotate(-90deg); }
-  .timer-bg { fill: none; stroke: var(--gray-2); stroke-width: 5; }
-  .timer-ring {
-    fill: none; stroke: var(--green-mid); stroke-width: 5;
-    stroke-linecap: round; stroke-dasharray: 163; stroke-dashoffset: 163;
-    transition: stroke-dashoffset 1s linear;
-  }
-  .timer-text-center {
-    position: absolute; inset: 0;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 13px; font-weight: 700; color: var(--text-dark);
-  }
-  .timer-info { flex: 1; }
-  .timer-session { font-size: 11px; color: var(--gray-3); margin-bottom: 3px; }
-  .timer-total { font-size: 13px; font-weight: 600; color: var(--gray-4); }
-  .timer-total span { color: var(--green-deep); }
-  .timer-btns { display: flex; gap: 8px; }
-  .tbtn {
-    flex: 1; border: none; border-radius: 10px;
-    padding: 10px 0; font-size: 13px; font-weight: 600;
-    font-family: 'Apple SD Gothic Neo','Noto Sans KR',sans-serif;
-    cursor: pointer; transition: all 0.15s;
-  }
-  .tbtn.start { background: var(--green-deep); color: white; }
-  .tbtn.start:hover { background: #155e38; }
-  .tbtn.plus { background: var(--green-pale); color: var(--green-deep); }
-  .tbtn.plus:hover { background: var(--green-light); }
-  .tbtn.gray { background: var(--gray-2); color: var(--gray-4); }
-  .tbtn.gray:hover { background: #d0d6d2; }
-  .task-time-badge {
-    font-size: 12px; color: var(--gray-3); font-weight: 500;
-    flex-shrink: 0; margin-right: 2px;
+    font-size: 11px; color: var(--green-deep);
   }
 
-  .empty-hint {
-    text-align: center; color: var(--gray-3); font-size: 13px;
-    padding: 36px 0 20px; line-height: 2;
-  }
-  .empty-hint .icon { font-size: 30px; margin-bottom: 8px; display: block; }
-
-  /* SUBTASK DRAWER */
-  .subtask-drawer {
-    display: none; position: absolute;
-    left: 0; right: 0; bottom: 0;
-    background: var(--white); border-radius: var(--radius);
-    box-shadow: 0 -4px 28px rgba(26,122,74,0.14);
-    z-index: 10; max-height: 360px;
-    overflow-y: auto; scrollbar-width: none;
-    animation: drawerUp 0.24s cubic-bezier(.4,0,.2,1);
-  }
-  .subtask-drawer::-webkit-scrollbar { display: none; }
-  @keyframes drawerUp {
-    from { opacity: 0; transform: translateY(14px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  .subtask-drawer.open { display: block; }
-  .drawer-header {
-    position: sticky; top: 0; background: var(--white);
-    padding: 16px 18px 10px;
-    display: flex; justify-content: space-between; align-items: center;
-    border-bottom: 1px solid var(--gray-2);
-  }
-  .drawer-title { font-size: 13px; font-weight: 600; color: var(--gray-4); }
-  .drawer-close {
-    background: none; border: none; cursor: pointer;
-    color: var(--gray-3); font-size: 18px; line-height: 1; padding: 0 2px;
-    transition: color 0.2s;
-  }
-  .drawer-close:hover { color: var(--text-dark); }
-  .drawer-goal-section { padding: 6px 16px; }
-  .drawer-goal-toggle {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 10px 12px; border-radius: var(--radius-sm);
-    cursor: pointer; transition: background 0.15s;
-    font-size: 13px; font-weight: 700; color: var(--green-deep);
-    user-select: none;
-  }
-  .drawer-goal-toggle:hover { background: var(--green-pale); }
-  .drawer-goal-toggle-left { display: flex; align-items: center; gap: 8px; }
-  .drawer-goal-toggle-left::before {
-    content: ''; display: inline-block;
-    width: 7px; height: 7px; background: var(--green-mid); border-radius: 50%;
-  }
-  .drawer-toggle-arrow {
-    font-size: 11px; color: var(--gray-3);
-    transition: transform 0.2s;
-  }
-  .drawer-toggle-arrow.open { transform: rotate(180deg); }
-  .drawer-sub-list {
-    overflow-y: auto;
-    max-height: 0;
-    transition: max-height 0.25s ease;
-    scrollbar-width: none;
-  }
-  .drawer-sub-list::-webkit-scrollbar { display: none; }
-  .drawer-sub-list.open { max-height: 200px; }
-
-  /* 직접 입력 영역 */
-  .drawer-direct-section {
-    padding: 10px 16px 14px;
-    border-top: 1px solid var(--gray-2);
-    margin-top: 4px;
-  }
-  .drawer-direct-label {
-    font-size: 11px; font-weight: 700; color: var(--gray-3);
-    letter-spacing: 0.06em; text-transform: uppercase;
-    margin-bottom: 8px;
-  }
-  .drawer-direct-row { display: flex; gap: 8px; }
-  .drawer-direct-input {
-    flex: 1; background: var(--gray-1); border: 1.5px solid var(--gray-2);
-    border-radius: var(--radius-sm); padding: 10px 13px;
-    font-size: 14px; font-family: 'Apple SD Gothic Neo','Noto Sans KR',sans-serif;
-    color: var(--text-dark); outline: none; transition: border-color 0.2s;
-  }
-  .drawer-direct-input:focus { border-color: var(--green-mid); background: var(--white); }
-  .drawer-direct-btn {
-    width: 42px; height: 42px; background: var(--green-deep); border: none;
-    border-radius: var(--radius-sm); color: white; font-size: 20px;
-    cursor: pointer; display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0; transition: background 0.2s;
-  }
-  .drawer-direct-btn:hover { background: #155e38; }
-  .drawer-sub-item {
-    display: flex; align-items: center; gap: 10px;
-    padding: 10px 12px; border-radius: var(--radius-sm);
-    cursor: pointer; transition: all 0.15s; margin-bottom: 4px;
-    border: 1.5px solid transparent;
-  }
-  .drawer-sub-item:hover { background: var(--green-pale); border-color: var(--green-light); }
-  .drawer-sub-item.added { opacity: 0.38; cursor: default; pointer-events: none; }
-  .drawer-sub-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green-light); flex-shrink: 0; }
-  .drawer-sub-text { font-size: 14px; flex: 1; }
-  .drawer-sub-check { font-size: 13px; color: var(--green-deep); }
-  .drawer-empty { padding: 20px 18px; color: var(--gray-3); font-size: 13px; text-align: center; }
-
-  /* MONTHLY */
-  #monthly-screen .screen-content {
-    flex: 1; padding: 0;
-    overflow: hidden; /* 전체 스크롤 방지 */
-    display: flex; flex-direction: column;
-  }
-  #monthly-screen .fixed-top-area {
-    padding: 0 22px 12px;
-    flex-shrink: 0; /* 상단 고정 영역이 줄어들지 않도록 설정 */
-  }
-
-  #monthly-screen .scrollable-goals-container {
+  /* MONTHLY SCREEN STRUCTURE (상단 고정/하단 스크롤) */
+  #monthly-screen { display: none; height: 100vh; flex-direction: column; }
+  #monthly-screen.active { display: flex; }
+  
+  .fixed-top-area { flex-shrink: 0; background: var(--white); padding-bottom: 10px; }
+  
+  /* 개별 목표 리스트 스크롤 영역 */
+  .scrollable-goals-container {
     flex: 1;
-    overflow-y: auto; /* 개별 목표 리스트만 스크롤 가능 */
-    padding: 0 22px 30px;
-    scrollbar-width: none;
+    overflow-y: auto;
+    padding: 0 22px 40px;
+    -webkit-overflow-scrolling: touch; /* iOS 부드러운 스크롤 */
   }
-  #monthly-screen .scrollable-goals-container::-webkit-scrollbar { display: none; }
+  .scrollable-goals-container::-webkit-scrollbar { display: none; }
 
+  /* UI COMPONENTS */
   .donut-wrap { display: flex; flex-direction: column; align-items: center; padding: 12px 0 20px; }
   .donut-container { position: relative; width: 160px; height: 160px; }
   .donut-svg { transform: rotate(-90deg); }
   .donut-bg { fill: none; stroke: var(--gray-2); stroke-width: 18; }
-  .donut-fill-expected {
-    fill: none; stroke: var(--green-light); stroke-width: 18; stroke-linecap: round;
-    stroke-dasharray: 389.56; transition: stroke-dashoffset 0.8s cubic-bezier(.4,0,.2,1);
-  }
   .donut-fill {
     fill: none; stroke: var(--green-mid); stroke-width: 18; stroke-linecap: round;
-    transition: stroke-dashoffset 0.8s cubic-bezier(.4,0,.2,1);
+    stroke-dasharray: 389.56; transition: stroke-dashoffset 0.8s ease;
   }
   .donut-center {
     position: absolute; inset: 0;
     display: flex; flex-direction: column; align-items: center; justify-content: center;
   }
-  .donut-pct { font-family: 'Georgia', 'Times New Roman', serif; font-size: 36px; color: var(--text-dark); line-height: 1; }
-  .donut-label { font-size: 11px; color: var(--gray-3); margin-top: 2px; }
-  .donut-legend { display: flex; gap: 18px; margin-top: 12px; }
-  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--gray-4); }
-  .legend-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .donut-pct { font-family: 'Georgia', serif; font-size: 36px; color: var(--text-dark); }
+  .donut-label { font-size: 11px; color: var(--gray-3); }
 
   .goals-section-label {
     font-size: 12px; font-weight: 700; color: var(--gray-3);
-    letter-spacing: 0.08em; text-transform: uppercase;
-    margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between;
+    margin: 10px 22px 12px; display: flex; align-items: center; justify-content: space-between;
   }
   .add-goal-btn {
     background: var(--green-deep); color: white; border: none;
-    border-radius: 20px; padding: 5px 13px;
-    font-size: 12px; font-weight: 600; cursor: pointer;
-    font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif; transition: all 0.2s;
+    border-radius: 20px; padding: 5px 13px; font-size: 12px; cursor: pointer;
   }
-  .add-goal-btn:hover { background: #155e38; }
 
   .goal-card {
     background: var(--gray-1); border-radius: var(--radius);
-    padding: 18px 18px 16px; margin-bottom: 12px;
-    border: 1.5px solid transparent; transition: all 0.22s;
+    padding: 18px; margin-bottom: 12px; border: 1.5px solid transparent;
   }
-  .goal-card:hover { border-color: var(--green-light); box-shadow: 0 4px 18px rgba(46,204,113,0.10); }
   .goal-card-header { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
-  .goal-card-title {
-    font-size: 15px; font-weight: 600; color: var(--text-dark);
-    flex: 1; cursor: pointer; transition: color 0.15s;
-  }
-  .goal-card-title:hover { color: var(--green-deep); }
-  .goal-card-count {
-    font-size: 12px; color: var(--gray-3);
-    background: var(--white); padding: 3px 9px; border-radius: 12px;
-  }
-  .goal-action-btn {
-    background: none; border: none; cursor: pointer;
-    font-size: 15px; padding: 3px 5px; color: var(--gray-3);
-    transition: color 0.15s; border-radius: 6px;
-  }
-  .goal-action-btn.edit:hover { color: var(--green-deep); }
-  .goal-action-btn.del:hover { color: var(--red); }
-
-  .goal-progress-bar {
-    height: 8px; background: var(--gray-2); border-radius: 10px;
-    overflow: hidden; margin-bottom: 6px; position: relative;
-  }
-  .gp-expected {
-    position: absolute; top: 0; left: 0; height: 100%;
-    background: var(--green-light); border-radius: 10px;
-    transition: width 0.6s cubic-bezier(.4,0,.2,1);
-  }
-  .gp-actual {
-    position: absolute; top: 0; left: 0; height: 100%;
-    background: linear-gradient(90deg, var(--green-mid), var(--green-deep));
-    border-radius: 10px; transition: width 0.6s cubic-bezier(.4,0,.2,1);
-  }
+  .goal-card-title { font-size: 15px; font-weight: 600; flex: 1; cursor: pointer; }
+  .goal-progress-bar { height: 8px; background: var(--gray-2); border-radius: 10px; overflow: hidden; margin-bottom: 6px; }
+  .gp-actual { height: 100%; background: var(--green-mid); border-radius: 10px; transition: width 0.6s ease; }
   .goal-progress-nums { display: flex; justify-content: space-between; font-size: 11px; color: var(--gray-3); }
-  .goal-pct-actual { color: var(--green-deep); font-weight: 600; }
+  
+  /* DAILY */
+  #daily-screen .screen-content { flex: 1; padding: 0 22px 30px; overflow-y: auto; }
+  .date-big { font-family: 'Georgia', serif; font-size: 72px; line-height: 1; margin-bottom: 4px; }
+  .date-day { font-size: 14px; color: var(--gray-3); margin-bottom: 20px; }
+  .daily-tasks-box { background: var(--gray-1); border-radius: var(--radius); padding: 18px; flex: 1; display: flex; flex-direction: column; }
+  #daily-task-list { flex: 1; overflow-y: auto; }
+  
+  .daily-task-item { background: var(--white); border-radius: var(--radius-sm); margin-bottom: 9px; padding: 12px 14px; display: flex; align-items: center; gap: 11px; box-shadow: var(--shadow-card); }
+  .daily-task-check { width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--green-mid); cursor: pointer; }
+  .daily-task-check.done { background: var(--green-mid); }
+  .daily-task-check.done::after { content: '✓'; color: white; display: flex; justify-content: center; font-size: 12px; }
+  .daily-task-text.done { text-decoration: line-through; color: var(--gray-3); }
 
-  .divider { height: 1px; background: var(--gray-2); margin: 14px 0; }
-
-  /* DETAIL */
-  #detail-screen .screen-header { padding-bottom: 12px; }
-  #detail-screen .screen-content {
-    flex: 1; padding: 0 22px 30px; overflow-y: auto; scrollbar-width: none;
-  }
-  #detail-screen .screen-content::-webkit-scrollbar { display: none; }
-  .back-btn {
-    display: flex; align-items: center; gap: 6px;
-    background: none; border: none; cursor: pointer;
-    font-size: 14px; color: var(--gray-4);
-    font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
-    margin-bottom: 14px; padding: 0; transition: color 0.2s;
-  }
-  .back-btn:hover { color: var(--green-deep); }
-  .detail-goal-title { font-family: 'Georgia', 'Times New Roman', serif; font-size: 24px; margin-bottom: 4px; }
-  .detail-progress-summary { font-size: 13px; color: var(--gray-3); margin-bottom: 20px; }
-  .detail-progress-summary span { color: var(--green-deep); font-weight: 600; }
-
-  .subtask-list { display: flex; flex-direction: column; gap: 9px; }
-  .subtask-item {
-    background: var(--gray-1); border-radius: var(--radius-sm);
-    padding: 13px 16px; display: flex; align-items: center; gap: 12px;
-    cursor: pointer; border: 1.5px solid transparent; transition: all 0.18s;
-  }
-  .subtask-item:hover { border-color: var(--green-light); background: var(--green-pale); }
-  .subtask-check {
-    width: 22px; height: 22px; border-radius: 50%;
-    border: 2px solid var(--green-mid); flex-shrink: 0;
-    display: flex; align-items: center; justify-content: center; transition: all 0.2s;
-  }
-  .subtask-check.done { background: var(--green-mid); border-color: var(--green-mid); }
-  .subtask-check.done::after { content: '✓'; color: white; font-size: 12px; font-weight: 700; }
-  .subtask-text { font-size: 14px; flex: 1; }
-  .subtask-text.done { text-decoration: line-through; color: var(--gray-3); }
-  .subtask-del {
-    background: none; border: none; cursor: pointer;
-    color: var(--gray-3); font-size: 15px; padding: 0 2px;
-    opacity: 0; transition: opacity 0.15s, color 0.15s; border-radius: 4px;
-  }
-  .subtask-item:hover .subtask-del { opacity: 1; }
-  .subtask-del:hover { color: var(--red); }
-
-  .add-subtask-form { margin-top: 14px; display: flex; gap: 8px; }
-  .add-subtask-input {
-    flex: 1; background: var(--gray-1); border: 1.5px solid var(--gray-2);
-    border-radius: var(--radius-sm); padding: 12px 16px; font-size: 14px;
-    font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif; color: var(--text-dark);
-    outline: none; transition: border-color 0.2s;
-  }
-  .add-subtask-input:focus { border-color: var(--green-mid); background: var(--white); }
-  .add-subtask-submit {
-    width: 46px; height: 46px; background: var(--green-deep); border: none;
-    border-radius: var(--radius-sm); color: white; font-size: 22px;
-    cursor: pointer; display: flex; align-items: center; justify-content: center;
-    transition: all 0.2s; flex-shrink: 0;
-  }
-  .add-subtask-submit:hover { background: #155e38; }
+  /* DETAIL SCREEN */
+  #detail-screen .screen-content { flex: 1; padding: 0 22px 30px; overflow-y: auto; }
+  .back-btn { background: none; border: none; color: var(--gray-4); cursor: pointer; margin-bottom: 15px; }
+  .subtask-item { background: var(--gray-1); border-radius: var(--radius-sm); padding: 13px 16px; display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
 
   /* MODALS */
-  .modal-overlay {
-    display: none; position: absolute; inset: 0;
-    background: rgba(26,38,32,0.45); z-index: 100;
-    align-items: flex-end; backdrop-filter: blur(2px);
-  }
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 100; align-items: flex-end; }
   .modal-overlay.show { display: flex; }
-  .modal-sheet {
-    background: var(--white); border-radius: 28px 28px 0 0;
-    padding: 26px 24px 40px; width: 100%;
-    animation: slideUp 0.26s cubic-bezier(.4,0,.2,1);
+  .modal-sheet { background: var(--white); border-radius: 28px 28px 0 0; padding: 26px 24px 40px; width: 100%; }
+  .modal-input { width: 100%; background: var(--gray-1); border: 1.5px solid var(--gray-2); border-radius: var(--radius-sm); padding: 12px; margin-bottom: 15px; }
+  .modal-submit { width: 100%; background: var(--green-deep); color: white; border: none; border-radius: var(--radius-sm); padding: 14px; font-weight: 600; cursor: pointer; }
+</style>
+</head>
+<body>
+
+<div id="monthly-screen" class="screen active">
+  <div class="fixed-top-area">
+    <div class="screen-header">
+      <button class="month-btn" onclick="showDaily()">
+        <span id="monthly-month-label">4월</span>
+        <span class="arrow">↓ 오늘</span>
+      </button>
+    </div>
+    <div class="donut-wrap">
+      <div class="donut-container">
+        <svg class="donut-svg" width="160" height="160" viewBox="0 0 160 160">
+          <circle class="donut-bg" cx="80" cy="80" r="62"/>
+          <circle class="donut-fill" cx="80" cy="80" r="62" id="donut-actual"/>
+        </svg>
+        <div class="donut-center">
+          <div class="donut-pct" id="donut-pct">0%</div>
+          <div class="donut-label">전체 진행률</div>
+        </div>
+      </div>
+    </div>
+    <div class="goals-section-label">
+      개별 목표
+      <button class="add-goal-btn" onclick="openAddGoalModal()">+ 목표 추가</button>
+    </div>
+  </div>
+  
+  <div id="goal-cards-container" class="scrollable-goals-container"></div>
+</div>
+
+<div id="detail-screen" class="screen">
+  <div class="screen-header">
+    <button class="back-btn" onclick="showMonthly()">← 돌아가기</button>
+    <div id="detail-title" style="font-size:24px; font-weight:bold; margin-bottom:10px;"></div>
+    <div id="detail-summary" style="font-size:13px; color:var(--gray-3);"></div>
+  </div>
+  <div class="screen-content">
+    <div id="subtask-list"></div>
+    <div style="margin-top:20px; display:flex; gap:10px;">
+      <input id="subtask-input" class="modal-input" style="margin-bottom:0;" placeholder="세부 항목 입력">
+      <button onclick="addSubtask()" class="add-goal-btn" style="padding:0 20px;">추가</button>
+    </div>
+  </div>
+</div>
+
+<div id="daily-screen" class="screen">
+  <div class="screen-header">
+    <button class="month-btn" onclick="showMonthly()">
+      <span id="daily-month-label">4월</span>
+      <span class="arrow">↑ 전체</span>
+    </button>
+  </div>
+  <div class="screen-content">
+    <div class="date-big" id="today-date">23</div>
+    <div class="date-day" id="today-day">목요일</div>
+    <div class="daily-tasks-box">
+      <div id="daily-task-list"></div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="goal-modal">
+  <div class="modal-sheet">
+    <h3 style="margin-bottom:15px;">새 목표 추가</h3>
+    <input class="modal-input" id="goal-modal-name" placeholder="목표 이름 (예: 언매 강의)">
+    <button class="modal-submit" onclick="submitGoalModal()">저장하기</button>
+    <button class="back-btn" style="width:100%; margin-top:10px;" onclick="closeGoalModal()">취소</button>
+  </div>
+</div>
+
+<script>
+// --- 데이터 및 초기화 ---
+let goals = JSON.parse(localStorage.getItem('sp_goals')) || [];
+let nextGoalId = parseInt(localStorage.getItem('sp_nextGoalId')) || 1;
+let currentDetailGoalId = null;
+
+const today = new Date();
+const currentMonth = today.getMonth() + 1;
+
+function init() {
+  document.getElementById('monthly-month-label').textContent = currentMonth + '월';
+  document.getElementById('daily-month-label').textContent = currentMonth + '월';
+  document.getElementById('today-date').textContent = today.getDate();
+  renderGoalCards();
+  updateDonut();
+}
+
+function saveData() {
+  localStorage.setItem('sp_goals', JSON.stringify(goals));
+  localStorage.setItem('sp_nextGoalId', nextGoalId);
+}
+
+// --- 화면 전환 ---
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+function showMonthly() { renderGoalCards(); updateDonut(); showScreen('monthly-screen'); }
+function showDaily() { showScreen('daily-screen'); renderDailyTasks(); }
+function showDetail(goalId) {
+  currentDetailGoalId = goalId;
+  renderSubtaskList();
+  showScreen('detail-screen');
+}
+
+// --- 목표 관리 (버그 수정됨) ---
+function renderGoalCards() {
+  const container = document.getElementById('goal-cards-container');
+  container.innerHTML = '';
+  
+  if (goals.length === 0) {
+    container.innerHTML = `<div style="text-align:center; color:var(--gray-3); margin-top:40px;">등록된 목표가 없습니다.</div>`;
+    return;
   }
-  @keyframes slideUp {
-    from { transform: translateY(100%); }
-    to { transform: translateY(0); }
+
+  goals.forEach(goal => {
+    const total = goal.subtasks ? goal.subtasks.length : 0;
+    const done = goal.subtasks ? goal.subtasks.filter(s => s.done).length : 0;
+    const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+
+    const card = document.createElement('div');
+    card.className = 'goal-card';
+    card.innerHTML = `
+      <div class="goal-card-header">
+        <div class="goal-card-title">${goal.name}</div>
+        <div style="font-size:12px; color:var(--gray-3);">${done}/${total}</div>
+        <button onclick="event.stopPropagation(); deleteGoal(${goal.id})" style="background:none; border:none; cursor:pointer;">🗑️</button>
+      </div>
+      <div class="goal-progress-bar">
+        <div class="gp-actual" style="width: ${pct}%"></div>
+      </div>
+      <div class="goal-progress-nums">
+        <span>진행률 ${pct}%</span>
+      </div>
+    `;
+    // 클릭 이벤트 분리 (데이터 혼선 방지)
+    card.addEventListener('click', () => showDetail(goal.id));
+    container.appendChild(card);
+  });
+}
+
+function deleteGoal(id) {
+  if(confirm('이 목표를 삭제할까요?')) {
+    goals = goals.filter(g => g.id !== id);
+    saveData();
+    renderGoalCards();
+    updateDonut();
   }
-  .modal-title { font-size: 17px; font-weight: 700; margin-bottom: 16px; }
-  .modal-input {
-    width: 100%; background: var(--gray-1); border: 1.5px solid var(--gray-2);
-    border-
+}
+
+// --- 세부 목표 관리 ---
+function renderSubtaskList() {
+  const goal = goals.find(g => g.id === currentDetailGoalId);
+  if (!goal) return;
+
+  document.getElementById('detail-title').textContent = goal.name;
+  const total = goal.subtasks.length;
+  const done = goal.subtasks.filter(s => s.done).length;
+  document.getElementById('detail-summary').textContent = `${total}개 중 ${done}개 완료`;
+
+  const list = document.getElementById('subtask-list');
+  list.innerHTML = '';
+  goal.subtasks.forEach((sub, index) => {
+    const div = document.createElement('div');
+    div.className = 'subtask-item';
+    div.innerHTML = `
+      <div class="daily-task-check ${sub.done ? 'done' : ''}"></div>
+      <span style="${sub.done ? 'text-decoration:line-through; color:var(--gray-3);' : ''}">${sub.text}</span>
+    `;
+    div.onclick = () => {
+      sub.done = !sub.done;
+      saveData();
+      renderSubtaskList();
+    };
+    list.appendChild(div);
+  });
+}
+
+function addSubtask() {
+  const input = document.getElementById('subtask-input');
+  if (!input.value.trim()) return;
+  const goal = goals.find(g => g.id === currentDetailGoalId);
+  if (!goal.subtasks) goal.subtasks = [];
+  goal.subtasks.push({ text: input.value.trim(), done: false });
+  input.value = '';
+  saveData();
+  renderSubtaskList();
+}
+
+// --- 모달 제어 ---
+function openAddGoalModal() { document.getElementById('goal-modal').classList.add('show'); }
+function closeGoalModal() { document.getElementById('goal-modal').classList.remove('show'); }
+function submitGoalModal() {
+  const name = document.getElementById('goal-modal-name').value.trim();
+  if (!name) return;
+  goals.push({ id: nextGoalId++, name: name, subtasks: [] });
+  saveData();
+  closeGoalModal();
+  renderGoalCards();
+  document.getElementById('goal-modal-name').value = '';
+}
+
+// --- 도넛 차트 업데이트 ---
+function updateDonut() {
+  let total = 0, done = 0;
+  goals.forEach(g => {
+    total += g.subtasks.length;
+    done += g.subtasks.filter(s => s.done).length;
+  });
+  const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+  const offset = 389.56 * (1 - pct / 100);
+  document.getElementById('donut-actual').style.strokeDashoffset = offset;
+  document.getElementById('donut-pct').textContent = pct + '%';
+}
+
+init();
+</script>
+</body>
+</html>
