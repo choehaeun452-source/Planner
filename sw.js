@@ -1,4 +1,4 @@
-const CACHE_NAME = 'study-planner-v21';
+const CACHE_NAME = 'study-planner-v20';
 const ASSETS = [
   './index.html',
   './manifest.json',
