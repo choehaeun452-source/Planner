@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
@@ -279,9 +280,21 @@
 
   /* MONTHLY */
   #monthly-screen .screen-content {
-    flex: 1; padding: 0 22px 30px; overflow-y: auto; scrollbar-width: none;
+    flex: 1; padding: 0;
+    overflow-y: hidden; 
+    display: flex; flex-direction: column;
   }
-  #monthly-screen .screen-content::-webkit-scrollbar { display: none; }
+  #monthly-screen .fixed-top-area {
+    padding: 0 22px 12px;
+  }
+
+  #monthly-screen .scrollable-goals-container {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0 22px 30px;
+    scrollbar-width: none;
+  }
+  #monthly-screen .scrollable-goals-container::-webkit-scrollbar { display: none; }
 
   .donut-wrap { display: flex; flex-direction: column; align-items: center; padding: 12px 0 20px; }
   .donut-container { position: relative; width: 160px; height: 160px; }
@@ -618,10 +631,10 @@
     padding: 3px 9px; border-radius: 20px; font-weight: 500; white-space: nowrap;
   }
 </style>
+
 </head>
 <body>
 
-<!-- DAILY -->
 <div id="daily-screen" class="screen active">
   <div class="screen-header">
     <button class="settings-btn" onclick="showSettings()" title="설정">⚙️</button>
@@ -635,37 +648,36 @@
     <div class="date-big" id="today-date">27</div>
     <div class="date-day" id="today-day">금요일 · 3월 2026</div>
 
-    <div class="daily-tasks-box" id="daily-tasks-box">
-      <div class="daily-box-header">
-        <span class="box-label">오늘의 학습</span>
-        <button class="add-task-btn" id="add-task-btn" onclick="toggleDrawer(event)" title="세부 목표 추가">+</button>
-      </div>
-      <div id="daily-task-list"></div>
-      <div id="daily-empty" class="empty-hint">
-        <span class="icon">📚</span>
-        오른쪽 <strong style="color:var(--green-deep)">+</strong> 버튼으로<br>오늘의 세부 목표를 추가해보세요
-      </div>
+<div class="daily-tasks-box" id="daily-tasks-box">
+  <div class="daily-box-header">
+    <span class="box-label">오늘의 학습</span>
+    <button class="add-task-btn" id="add-task-btn" onclick="toggleDrawer(event)" title="세부 목표 추가">+</button>
+  </div>
+  <div id="daily-task-list"></div>
+  <div id="daily-empty" class="empty-hint">
+    <span class="icon">📚</span>
+    오른쪽 <strong style="color:var(--green-deep)">+</strong> 버튼으로<br>오늘의 세부 목표를 추가해보세요
+  </div>
 
-      <!-- Drawer -->
-      <div class="subtask-drawer" id="subtask-drawer">
-        <div class="drawer-header">
-          <span class="drawer-title">오늘 학습 추가</span>
-          <button class="drawer-close" onclick="closeDrawer()">✕</button>
-        </div>
-        <div id="drawer-content"></div>
-        <div class="drawer-direct-section">
-          <div class="drawer-direct-label">직접 입력</div>
-          <div class="drawer-direct-row">
-            <input class="drawer-direct-input" id="drawer-direct-input" type="text" placeholder="직접 입력하기">
-            <button class="drawer-direct-btn" onclick="addDirectTask()">+</button>
-          </div>
-        </div>
+  <div class="subtask-drawer" id="subtask-drawer">
+    <div class="drawer-header">
+      <span class="drawer-title">오늘 학습 추가</span>
+      <button class="drawer-close" onclick="closeDrawer()">✕</button>
+    </div>
+    <div id="drawer-content"></div>
+    <div class="drawer-direct-section">
+      <div class="drawer-direct-label">직접 입력</div>
+      <div class="drawer-direct-row">
+        <input class="drawer-direct-input" id="drawer-direct-input" type="text" placeholder="직접 입력하기">
+        <button class="drawer-direct-btn" onclick="addDirectTask()">+</button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- SETTINGS -->
+  </div>
+</div>
+
 <div id="settings-screen" class="screen">
   <div class="screen-header">
     <button class="back-btn" onclick="showDaily()">← 돌아가기</button>
@@ -674,33 +686,33 @@
   <div class="screen-content">
     <div class="settings-section-title">데이터 관리</div>
 
-    <div class="settings-card">
-      <div class="settings-card-title">📤 데이터 내보내기</div>
-      <div class="settings-card-desc">지금 저장된 목표 데이터를 텍스트로 복사해두면 나중에 복구할 수 있어요.</div>
-      <div class="settings-btn-row">
-        <button class="settings-action-btn primary" onclick="exportData()">데이터 복사하기</button>
-      </div>
-      <div class="settings-msg" id="export-msg"></div>
-      <textarea class="settings-textarea" id="export-area" readonly placeholder="여기에 데이터가 표시돼요" style="margin-top:10px;"></textarea>
-    </div>
+<div class="settings-card">
+  <div class="settings-card-title">📤 데이터 내보내기</div>
+  <div class="settings-card-desc">지금 저장된 목표 데이터를 텍스트로 복사해두면 나중에 복구할 수 있어요.</div>
+  <div class="settings-btn-row">
+    <button class="settings-action-btn primary" onclick="exportData()">데이터 복사하기</button>
+  </div>
+  <div class="settings-msg" id="export-msg"></div>
+  <textarea class="settings-textarea" id="export-area" readonly placeholder="여기에 데이터가 표시돼요" style="margin-top:10px;"></textarea>
+</div>
 
-    <div class="settings-card">
-      <div class="settings-card-title">📥 데이터 가져오기</div>
-      <div class="settings-card-desc">이전에 복사해둔 데이터를 아래에 붙여넣고 가져오기를 누르세요. 기존 데이터는 덮어써져요.</div>
-      <div class="settings-msg" id="import-msg"></div>
-      <textarea class="settings-textarea" id="import-area" placeholder="데이터를 여기에 붙여넣기 하세요"></textarea>
-      <div class="settings-btn-row">
-        <button class="settings-action-btn secondary" onclick="clearImport()">지우기</button>
-        <button class="settings-action-btn primary" onclick="importData()">가져오기</button>
-      </div>
-    </div>
-
-    <div class="settings-section-title">저장된 데이터 현황</div>
-    <div class="settings-card" id="data-status"></div>
+<div class="settings-card">
+  <div class="settings-card-title">📥 데이터 가져오기</div>
+  <div class="settings-card-desc">이전에 복사해둔 데이터를 아래에 붙여넣고 가져오기를 누르세요. 기존 데이터는 덮어써져요.</div>
+  <div class="settings-msg" id="import-msg"></div>
+  <textarea class="settings-textarea" id="import-area" placeholder="데이터를 여기에 붙여넣기 하세요"></textarea>
+  <div class="settings-btn-row">
+    <button class="settings-action-btn secondary" onclick="clearImport()">지우기</button>
+    <button class="settings-action-btn primary" onclick="importData()">가져오기</button>
   </div>
 </div>
 
-<!-- CALENDAR -->
+<div class="settings-section-title">저장된 데이터 현황</div>
+<div class="settings-card" id="data-status"></div>
+
+  </div>
+</div>
+
 <div id="calendar-screen" class="screen">
   <div class="screen-header">
     <button class="back-btn" onclick="showDaily()">← 돌아가기</button>
@@ -718,7 +730,6 @@
   </div>
 </div>
 
-<!-- DAY RECORD -->
 <div id="dayrecord-screen" class="screen">
   <div class="screen-header">
     <button class="back-btn" onclick="showCalendar()">← 달력</button>
@@ -730,7 +741,6 @@
   </div>
 </div>
 
-<!-- MONTHLY -->
 <div id="monthly-screen" class="screen">
   <div class="screen-header">
     <button class="month-btn" onclick="showDaily()">
@@ -739,28 +749,29 @@
     </button>
   </div>
   <div class="screen-content">
-    <div class="donut-wrap">
-      <div class="donut-container">
-        <svg class="donut-svg" width="160" height="160" viewBox="0 0 160 160">
-          <circle class="donut-bg" cx="80" cy="80" r="62"/>
-          <circle class="donut-fill" cx="80" cy="80" r="62" id="donut-actual" stroke-dasharray="389.56" stroke-dashoffset="389.56"/>
-        </svg>
-        <div class="donut-center">
-          <div class="donut-pct" id="donut-pct">0%</div>
-          <div class="donut-label">전체 진행률</div>
+    <div class="fixed-top-area">
+      <div class="donut-wrap">
+        <div class="donut-container">
+          <svg class="donut-svg" width="160" height="160" viewBox="0 0 160 160">
+            <circle class="donut-bg" cx="80" cy="80" r="62"/>
+            <circle class="donut-fill" cx="80" cy="80" r="62" id="donut-actual" stroke-dasharray="389.56" stroke-dashoffset="389.56"/>
+          </svg>
+          <div class="donut-center">
+            <div class="donut-pct" id="donut-pct">0%</div>
+            <div class="donut-label">전체 진행률</div>
+          </div>
         </div>
       </div>
+      <div class="divider"></div>
+      <div class="goals-section-label">
+        개별 목표
+        <button class="add-goal-btn" onclick="openAddGoalModal()">+ 목표 추가</button>
+      </div>
     </div>
-    <div class="divider"></div>
-    <div class="goals-section-label">
-      개별 목표
-      <button class="add-goal-btn" onclick="openAddGoalModal()">+ 목표 추가</button>
-    </div>
-    <div id="goal-cards-container"></div>
+    <div id="goal-cards-container" class="scrollable-goals-container"></div>
   </div>
 </div>
 
-<!-- DETAIL -->
 <div id="detail-screen" class="screen">
   <div class="screen-header">
     <button class="back-btn" onclick="showMonthly()">← 돌아가기</button>
@@ -776,7 +787,6 @@
   </div>
 </div>
 
-<!-- MODAL: Add/Edit Goal -->
 <div class="modal-overlay" id="goal-modal" onclick="closeGoalModal(event)">
   <div class="modal-sheet">
     <div class="modal-title" id="goal-modal-title">새 목표 추가</div>
@@ -786,7 +796,6 @@
   </div>
 </div>
 
-<!-- MODAL: Delete Confirm -->
 <div class="modal-overlay" id="delete-modal" onclick="closeDeleteModal(event)">
   <div class="modal-sheet">
     <div class="modal-title" id="delete-modal-title">목표 삭제</div>
@@ -797,7 +806,6 @@
     </div>
   </div>
 </div>
-
 
 <script>
 // ===== 실제 날짜 자동 적용 =====
@@ -1261,10 +1269,6 @@ function onTimerDone(taskId) {
 
   // 소리 알림
   playBeep();
-  // 브라우저 알림
-  if (Notification && Notification.permission === 'granted') {
-    new Notification('5분 완료! ⏰', { body: task ? task.text : '학습 완료', icon: './icon-192.png' });
-  }
 
   renderDailyTasks();
   saveData();
@@ -1400,21 +1404,65 @@ function renderGoalCards() {
     const expectedPct = Math.min(Math.round((daysPassed / daysInMonth) * 100), 100);
     const card = document.createElement('div');
     card.className = 'goal-card';
-    card.innerHTML = `
-      <div class="goal-card-header">
-        <div class="goal-card-title" onclick="showDetail(${goal.id})">${goal.name}</div>
-        <div class="goal-card-count">${done}/${total}</div>
-        <button class="goal-action-btn edit" onclick="openEditGoalModal(${goal.id})" title="수정">✏️</button>
-        <button class="goal-action-btn del" onclick="openDeleteModal(${goal.id})" title="삭제">🗑️</button>
-      </div>
-      <div class="goal-progress-bar">
-        <div class="gp-actual" style="width:${actualPct}%"></div>
-      </div>
-      <div class="goal-progress-nums">
-        <span class="goal-pct-actual">진행률 ${actualPct}%</span>
-        <span style="color:var(--gray-3);font-size:11px;">${done}/${total}</span>
-      </div>
-    `;
+
+    // 1. goal-card-header 생성
+    const header = document.createElement('div');
+    header.className = 'goal-card-header';
+
+    // 1-1. 제목 (클로저 사용)
+    const title = document.createElement('div');
+    title.className = 'goal-card-title';
+    title.textContent = goal.name;
+    title.onclick = () => showDetail(goal.id); // 올바른 ID 캡처
+    header.appendChild(title);
+
+    // 1-2. 카운트
+    const count = document.createElement('div');
+    count.className = 'goal-card-count';
+    count.textContent = `${done}/${total}`;
+    header.appendChild(count);
+
+    // 1-3. 수정 버튼 (클로저 사용)
+    const editBtn = document.createElement('button');
+    editBtn.className = 'goal-action-btn edit';
+    editBtn.textContent = '✏️';
+    editBtn.title = '수정';
+    editBtn.onclick = (e) => { e.stopPropagation(); openEditGoalModal(goal.id); }; // 올바른 ID 캡처
+    header.appendChild(editBtn);
+
+    // 1-4. 삭제 버튼 (클로저 사용)
+    const delBtn = document.createElement('button');
+    delBtn.className = 'goal-action-btn del';
+    delBtn.textContent = '🗑️';
+    delBtn.title = '삭제';
+    delBtn.onclick = (e) => { e.stopPropagation(); openDeleteModal(goal.id); }; // 올바른 ID 캡처
+    header.appendChild(delBtn);
+
+    card.appendChild(header);
+
+    // 2. goal-progress-bar 생성
+    const progressBar = document.createElement('div');
+    progressBar.className = 'goal-progress-bar';
+    const actualProgress = document.createElement('div');
+    actualProgress.className = 'gp-actual';
+    actualProgress.style.width = `${actualPct}%`;
+    progressBar.appendChild(actualProgress);
+    card.appendChild(progressBar);
+
+    // 3. goal-progress-nums 생성
+    const progressNums = document.createElement('div');
+    progressNums.className = 'goal-progress-nums';
+    const pctActual = document.createElement('span');
+    pctActual.className = 'goal-pct-actual';
+    pctActual.textContent = `진행률 ${actualPct}%`;
+    progressNums.appendChild(pctActual);
+    const fraction = document.createElement('span');
+    fraction.style.color = 'var(--gray-3)';
+    fraction.style.fontSiz = '11px';
+    fraction.textContent = `${done}/${total}`;
+    progressNums.appendChild(fraction);
+    card.appendChild(progressNums);
+
     container.appendChild(card);
   });
 }
@@ -1634,6 +1682,7 @@ function showDayRecord(day, key, isToday) {
 
 init();
 </script>
+
 <script>
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
@@ -1643,5 +1692,6 @@ if ('serviceWorker' in navigator) {
   });
 }
 </script>
+
 </body>
 </html>
