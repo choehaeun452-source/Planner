@@ -857,25 +857,48 @@ function loadData() {
     const savedGoals = localStorage.getItem(STORAGE_KEY_GOALS);
     if (savedGoals !== null) {
       goals = JSON.parse(savedGoals);
-      nextGoalId = parseInt(localStorage.getItem(STORAGE_KEY_NEXT_GOAL_ID)) || nextGoalId;
+      
+      // [버그 수정] ID 중복 방지 및 자가 치유 로직
+      let maxId = 0;
+      goals.forEach(g => { if (g.id > maxId) maxId = g.id; });
+      
+      let usedIds = new Set();
+      goals.forEach(g => {
+        if (usedIds.has(g.id)) {
+          maxId++;
+          g.id = maxId; // 중복된 ID가 발견되면 즉시 새로운 ID 부여
+        }
+        usedIds.add(g.id);
+      });
+      
+      const loadedNextId = parseInt(localStorage.getItem(STORAGE_KEY_NEXT_GOAL_ID));
+      nextGoalId = (!isNaN(loadedNextId) && loadedNextId > maxId) ? loadedNextId : maxId + 1;
+      
     } else {
       checkCarryover();
     }
+    
     const savedDate = localStorage.getItem(STORAGE_KEY_DAILY_DATE);
     if (savedDate === todayKey) {
       const savedDaily = localStorage.getItem(STORAGE_KEY_DAILY);
       if (savedDaily) dailyTasks = JSON.parse(savedDaily);
-      dailyTaskNextId = parseInt(localStorage.getItem(STORAGE_KEY_DAILY_NEXT_ID)) || 1;
+      
+      // 일일 태스크 ID도 안전하게 관리
+      let maxTaskId = 0;
+      dailyTasks.forEach(t => { if (t.id > maxTaskId) maxTaskId = t.id; });
+      let loadedDailyNextId = parseInt(localStorage.getItem(STORAGE_KEY_DAILY_NEXT_ID));
+      dailyTaskNextId = (!isNaN(loadedDailyNextId) && loadedDailyNextId > maxTaskId) ? loadedDailyNextId : maxTaskId + 1;
+      
       const savedKeys = localStorage.getItem('sp_dailyAddedKeys');
       if (savedKeys) dailyAddedKeys = new Set(JSON.parse(savedKeys));
       const savedTimers = localStorage.getItem('sp_taskTimers');
       if (savedTimers) taskTimers = JSON.parse(savedTimers);
     } else {
-      // 날짜 바뀌면 타이머 데이터도 초기화
       localStorage.removeItem('sp_taskTimers');
     }
-  } catch(e) { console.warn('불러오기 실패', e); }
+  } catch(e) { console.warn('데이터 로드 중 오류 발생:', e); }
 }
+
 
 // ===== CARRYOVER =====
 let carryoverSelected = new Set();
