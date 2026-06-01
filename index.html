@@ -221,10 +221,8 @@
     border: 1.5px solid transparent; background: var(--gray-1);
   }
   .drawer-sub-item:hover { background: var(--green-pale); border-color: var(--green-light); }
-  .drawer-sub-item.added { opacity: 0.38; cursor: default; pointer-events: none; }
   .drawer-sub-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green-light); flex-shrink: 0; }
   .drawer-sub-text { font-size: 14px; flex: 1; font-weight: 600; }
-  .drawer-sub-check { font-size: 13px; color: var(--green-deep); }
   .drawer-empty { padding: 20px 18px; color: var(--gray-3); font-size: 13px; text-align: center; }
 
   /* 직접 입력 영역 */
@@ -397,56 +395,6 @@
   }
   .delete-desc { font-size: 13px; color: var(--gray-4); margin-bottom: 18px; }
 
-  /* SETTINGS */
-  .settings-btn {
-    width: 36px; height: 36px;
-    background: var(--gray-1); border: none; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    cursor: pointer; font-size: 17px; transition: all 0.2s;
-    position: absolute; top: 50px; right: 72px;
-  }
-  .settings-btn:hover { background: var(--gray-2); }
-  #settings-screen .screen-content {
-    flex: 1; padding: 0 22px 30px; overflow-y: auto; scrollbar-width: none;
-  }
-  #settings-screen .screen-content::-webkit-scrollbar { display: none; }
-  .settings-section-title {
-    font-size: 11px; font-weight: 700; color: var(--gray-3);
-    letter-spacing: 0.08em; text-transform: uppercase;
-    margin: 20px 0 10px;
-  }
-  .settings-card {
-    background: var(--gray-1); border-radius: var(--radius);
-    padding: 18px 20px; margin-bottom: 10px;
-  }
-  .settings-card-title { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
-  .settings-card-desc { font-size: 12px; color: var(--gray-3); margin-bottom: 14px; line-height: 1.6; }
-  .settings-btn-row { display: flex; gap: 8px; }
-  .settings-action-btn {
-    flex: 1; border: none; border-radius: var(--radius-sm);
-    padding: 12px; font-size: 13px; font-weight: 600;
-    font-family: 'Apple SD Gothic Neo','Noto Sans KR',sans-serif;
-    cursor: pointer; transition: all 0.2s;
-  }
-  .settings-action-btn.primary { background: var(--green-deep); color: white; }
-  .settings-action-btn.primary:hover { background: #155e38; }
-  .settings-action-btn.secondary { background: var(--gray-2); color: var(--gray-4); }
-  .settings-action-btn.secondary:hover { background: #d0d6d2; }
-  .settings-textarea {
-    width: 100%; background: var(--white); border: 1.5px solid var(--gray-2);
-    border-radius: var(--radius-sm); padding: 12px; font-size: 12px;
-    font-family: monospace; color: var(--text-dark); outline: none;
-    resize: none; height: 120px; margin-bottom: 10px;
-    transition: border-color 0.2s;
-  }
-  .settings-textarea:focus { border-color: var(--green-mid); }
-  .settings-msg {
-    font-size: 12px; padding: 8px 12px; border-radius: 8px;
-    margin-bottom: 10px; display: none;
-  }
-  .settings-msg.ok { background: var(--green-pale); color: var(--green-deep); display: block; }
-  .settings-msg.err { background: #fdecea; color: var(--red); display: block; }
-
   /* MONTH SELECTOR */
   .month-select-item {
     display: flex; align-items: center; justify-content: space-between;
@@ -495,7 +443,6 @@
   .daily-task-name { font-size: 14px; color: var(--text-dark); font-weight: 600; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .daily-range-wrap { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
   
-  /* 분량 입력 칸 통일화 (왼쪽/오른쪽 색상 동일) */
   .daily-range-fixed, .daily-range-input {
     background: var(--white); border: 1.5px solid var(--gray-2);
     border-radius: 8px; padding: 7px 10px;
@@ -523,7 +470,6 @@
 
 <div id="daily-screen" class="screen active">
   <div class="screen-header">
-    <button class="settings-btn" onclick="showSettings()" title="설정">⚙️</button>
     <button class="month-btn" onclick="showMonthly()">
       <span id="daily-month-label">3월</span>
       <span class="arrow">↑</span>
@@ -559,33 +505,6 @@
         </div>
       </div>
     </div>
-  </div>
-</div>
-
-<div id="settings-screen" class="screen">
-  <div class="screen-header">
-    <button class="back-btn" onclick="showDaily()">← 돌아가기</button>
-    <div class="detail-goal-title">설정</div>
-  </div>
-  <div class="screen-content">
-    <div class="settings-section-title">데이터 관리</div>
-    <div class="settings-card">
-      <div class="settings-card-title">📤 데이터 내보내기</div>
-      <div class="settings-card-desc">저장된 데이터를 복사해두면 나중에 복구할 수 있어요.</div>
-      <div class="settings-btn-row">
-        <button class="settings-action-btn primary" onclick="exportData()">데이터 복사하기</button>
-      </div>
-      <div class="settings-msg" id="export-msg"></div>
-      <textarea class="settings-textarea" id="export-area" readonly placeholder="여기에 데이터가 표시돼요" style="margin-top:10px;"></textarea>
-    </div>
-    <div class="settings-card">
-      <div class="settings-card-title">📥 이전 달 목표 불러오기</div>
-      <div class="settings-card-desc">저장된 월을 선택하면 해당 달의 목표를 이번 달로 가져와요.</div>
-      <div class="settings-msg" id="import-msg"></div>
-      <div id="month-selector-list" style="margin-bottom:12px;"></div>
-    </div>
-    <div class="settings-section-title">저장된 데이터 현황</div>
-    <div class="settings-card" id="data-status"></div>
   </div>
 </div>
 
@@ -681,7 +600,7 @@ const MONTHS_KR = ['1월','2월','3월','4월','5월','6월','7월','8월','9월
 const DAYS_KR = ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'];
 
 const monthKey = currentYear + '-' + (currentMonth + 1);
-const todayKey = (currentMonth + 1) + '/' + today.getDate(); // 6/4 형태
+const todayKey = (currentMonth + 1) + '/' + today.getDate();
 
 // ===== STORAGE =====
 const STORAGE_KEY_GOALS = 'sp_goals_v2_' + monthKey; 
@@ -796,19 +715,14 @@ function renderDrawer() {
     if (!goal.rangeTo) return; // 분량 설정된 목표만 표시
     anyItem = true;
     
-    // 오늘 이미 추가된 목표인지 확인
-    const isAdded = dailyTasks.some(t => t.goalId === goal.id);
     const item = document.createElement('div');
-    item.className = 'drawer-sub-item' + (isAdded ? ' added' : '');
+    item.className = 'drawer-sub-item';
     item.innerHTML = `
       <div class="drawer-sub-dot"></div>
       <span class="drawer-sub-text">${goal.name}</span>
-      ${isAdded ? '<span class="drawer-sub-check">✓</span>' : ''}
     `;
     
-    if (!isAdded) {
-      item.onclick = (e) => { e.stopPropagation(); addDailyRangeTask(goal, item); };
-    }
+    item.onclick = (e) => { e.stopPropagation(); addDailyRangeTask(goal); };
     content.appendChild(item);
   });
   
@@ -817,9 +731,7 @@ function renderDrawer() {
   }
 }
 
-function addDailyRangeTask(goal, itemEl) {
-  itemEl.classList.add('added');
-  itemEl.innerHTML = `<div class="drawer-sub-dot"></div><span class="drawer-sub-text">${goal.name}</span><span class="drawer-sub-check">✓</span>`;
+function addDailyRangeTask(goal) {
   dailyTasks.push({
     id: dailyTaskNextId++,
     text: goal.name,
@@ -870,11 +782,12 @@ function renderDailyTasks() {
     let mainContentHTML = '';
     
     if (goal) {
-      // 분량 기반 목표 항목
+      // 완료된 항목이거나 이미 시작값이 저장된 경우 저장된 값을 사용, 그 외에는 현재 목표값을 표시
+      const displayStart = (task.done && task.startValue !== undefined) ? task.startValue : goal.current;
       mainContentHTML = `
         <span class="daily-task-name">${task.text}</span>
         <div class="daily-range-wrap" onclick="event.stopPropagation()">
-          <div class="daily-range-fixed">${goal.current}</div>
+          <div class="daily-range-fixed">${displayStart}</div>
           <span style="color:var(--gray-3);font-size:14px;font-weight:600;">~</span>
           <input type="number" class="daily-range-input" id="range-input-${task.id}" value="${task.targetValue !== null ? task.targetValue : ''}" ${task.done ? 'disabled' : ''} placeholder="">
           <span class="daily-unit">${goal.unit}</span>
@@ -949,6 +862,7 @@ function toggleDailyTask(taskId) {
          return;
       }
       
+      task.startValue = goal.current; // 완료 시점의 시작 분량을 고정 저장
       task.targetValue = targetVal;
       goal.history.push({
         date: todayKey,
@@ -969,6 +883,7 @@ function toggleDailyTask(taskId) {
         goal.history.pop();
       }
       task.targetValue = null;
+      delete task.startValue; // 고정된 시작값 초기화
     }
     task.done = false;
   }
@@ -976,7 +891,7 @@ function toggleDailyTask(taskId) {
 }
 
 
-// ===== TIMER LOGIC ===== (기존과 동일하게 유지)
+// ===== TIMER LOGIC ===== 
 let taskTimers = {};
 let timerRemaining = {};
 let activeTimerId = null;
@@ -995,7 +910,7 @@ document.addEventListener('touchend', handleUserGesture, { passive: true });
 document.addEventListener('click', handleUserGesture, { passive: true });
 
 function formatSeconds(s) { const m = Math.floor(s / 60), sec = s % 60; return m + ':' + String(sec).padStart(2, '0'); }
-function formatTimerLabel(totalSec) { if (!totalSec || totalSec === 0) return ''; const m = Math.floor(totalSec / 60); if (m < 60) return m + 'm'; const h = Math.floor(m / 60), rm = m % 60; return rm > 0 ? h + 'h ' + rm + 'm' : h + 'h'; }
+function formatTimerLabel(totalSec) { if (!totalSec || totalSec === 0) return ''; const m = Math.floor(totalSec / 60); if (m < 60) return m + 'm'; const h = Math.floor(m / 60), rm = m % 60; return rm > 0 ? h + 'h ' + rm + 'm'; }
 function toggleTaskExpand(taskId) { expandedTaskId = expandedTaskId === taskId ? null : taskId; renderDailyTasks(); }
 
 function startTimer(taskId) {
@@ -1017,23 +932,6 @@ function resumeTimer(taskId) { activeTimerId = taskId; pausedTimerId = null; run
 function stopTimer(taskId) { clearInterval(timerInterval); const elapsed = 300 - (timerRemaining[taskId] || 0); if (!taskTimers[taskId]) taskTimers[taskId] = { totalSec: 0, sessions: 0 }; taskTimers[taskId].totalSec += elapsed; timerRemaining[taskId] = 300; activeTimerId = null; pausedTimerId = null; renderDailyTasks(); saveData(); }
 function onTimerDone(taskId) { clearInterval(timerInterval); if (!taskTimers[taskId]) taskTimers[taskId] = { totalSec: 0, sessions: 0 }; taskTimers[taskId].totalSec += 300; taskTimers[taskId].sessions++; timerRemaining[taskId] = 300; activeTimerId = null; pausedTimerId = null; playBeep(); if (Notification && Notification.permission === 'granted') { new Notification('5분 완료! ⏰', { body: '학습 완료', icon: './icon-192.png' }); } renderDailyTasks(); saveData(); }
 function requestNotificationPermission() { if (Notification && Notification.permission === 'default') { Notification.requestPermission(); } }
-
-// ===== SETTINGS =====
-function showSettings() { renderDataStatus(); showScreen('settings-screen'); }
-function exportData() {
-  try {
-    const data = {};
-    for (let i = 0; i < localStorage.length; i++) {
-      const key = localStorage.key(i);
-      if (key && key.startsWith('sp_')) data[key] = localStorage.getItem(key);
-    }
-    const json = JSON.stringify(data, null, 2);
-    document.getElementById('export-area').value = json;
-    if (navigator.clipboard) { navigator.clipboard.writeText(json).then(() => { showSettingsMsg('export-msg', '✓ 복사됐어요!', 'ok'); }).catch(() => { showSettingsMsg('export-msg', '아래 텍스트를 직접 복사하세요.', 'ok'); }); } else { showSettingsMsg('export-msg', '아래 텍스트를 복사하세요.', 'ok'); }
-  } catch(e) { showSettingsMsg('export-msg', '실패: ' + e.message, 'err'); }
-}
-function showSettingsMsg(id, msg, type) { const el = document.getElementById(id); el.textContent = msg; el.className = 'settings-msg ' + type; setTimeout(() => { el.className = 'settings-msg'; }, 5000); }
-function renderDataStatus() { const el = document.getElementById('data-status'); el.innerHTML = `<div style="padding:8px 0;font-size:13px;">이번 달 목표 ${goals.length}개 저장됨</div>`; }
 
 // ===== MONTHLY OVERVIEW =====
 function updateDonut() {
@@ -1086,7 +984,7 @@ function openAddGoalModal() {
   goalModalMode = 'add'; goalModalEditId = null;
   document.getElementById('goal-modal-title').textContent = '새 목표 추가';
   document.getElementById('goal-modal-name').value = '';
-  document.getElementById('goal-modal-from').value = '';
+  document.getElementById('goal-modal-from').value = '1';
   document.getElementById('goal-modal-to').value = '';
   document.getElementById('goal-modal-unit').value = '';
   document.getElementById('goal-modal').classList.add('show');
