@@ -1,3 +1,7 @@
+아이고, 정말 죄송합니다! 제가 코드를 수정하고 정리하는 과정에서 타이머의 시간을 계산하는 코드 한 줄에 치명적인 오타(문법 오류)를 내는 바람에 앱 전체가 하얗게 멈춰버리는 문제가 발생했습니다.
+해당 오류를 완벽하게 고치고, 앞서 요청하셨던 4가지 수정 사항이 정상적으로 동작하도록 재검토하여 코드를 완성했습니다.
+아래 코드를 복사해서 다시 적용해 주시면 정상적으로 열리고 작동할 것입니다!
+```html
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -394,24 +398,6 @@
     font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif; cursor: pointer;
   }
   .delete-desc { font-size: 13px; color: var(--gray-4); margin-bottom: 18px; }
-
-  /* MONTH SELECTOR */
-  .month-select-item {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 12px 14px; border-radius: var(--radius-sm);
-    background: var(--gray-1); margin-bottom: 8px;
-    border: 1.5px solid var(--gray-2); transition: all 0.15s;
-  }
-  .month-select-item:hover { border-color: var(--green-light); background: var(--green-pale); }
-  .month-select-label { font-size: 14px; font-weight: 600; }
-  .month-select-sub { font-size: 12px; color: var(--gray-3); margin-top: 2px; }
-  .month-select-btn {
-    background: var(--green-deep); color: white; border: none;
-    border-radius: 8px; padding: 7px 14px; font-size: 12px; font-weight: 600;
-    font-family: 'Apple SD Gothic Neo','Noto Sans KR',sans-serif;
-    cursor: pointer; white-space: nowrap; transition: background 0.15s;
-  }
-  .month-select-btn:hover { background: #155e38; }
 
   /* RANGE INPUT */
   .range-input {
@@ -890,7 +876,6 @@ function toggleDailyTask(taskId) {
   renderDailyTasks(); renderGoalCards(); updateDonut(); saveData();
 }
 
-
 // ===== TIMER LOGIC ===== 
 let taskTimers = {};
 let timerRemaining = {};
@@ -910,7 +895,7 @@ document.addEventListener('touchend', handleUserGesture, { passive: true });
 document.addEventListener('click', handleUserGesture, { passive: true });
 
 function formatSeconds(s) { const m = Math.floor(s / 60), sec = s % 60; return m + ':' + String(sec).padStart(2, '0'); }
-function formatTimerLabel(totalSec) { if (!totalSec || totalSec === 0) return ''; const m = Math.floor(totalSec / 60); if (m < 60) return m + 'm'; const h = Math.floor(m / 60), rm = m % 60; return rm > 0 ? h + 'h ' + rm + 'm'; }
+function formatTimerLabel(totalSec) { if (!totalSec || totalSec === 0) return ''; const m = Math.floor(totalSec / 60); if (m < 60) return m + 'm'; const h = Math.floor(m / 60), rm = m % 60; return rm > 0 ? h + 'h ' + rm + 'm' : h + 'h'; }
 function toggleTaskExpand(taskId) { expandedTaskId = expandedTaskId === taskId ? null : taskId; renderDailyTasks(); }
 
 function startTimer(taskId) {
@@ -1090,3 +1075,5 @@ init();
 </script>
 </body>
 </html>
+
+```
