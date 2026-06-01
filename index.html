@@ -183,7 +183,7 @@
   }
   .empty-hint .icon { font-size: 30px; margin-bottom: 8px; display: block; }
 
-  /* SUBTASK DRAWER */
+  /* DRAWER */
   .subtask-drawer {
     display: none; position: absolute;
     left: 0; right: 0; bottom: 0;
@@ -213,32 +213,19 @@
   }
   .drawer-close:hover { color: var(--text-dark); }
   .drawer-goal-section { padding: 6px 16px; }
-  .drawer-goal-toggle {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 10px 12px; border-radius: var(--radius-sm);
-    cursor: pointer; transition: background 0.15s;
-    font-size: 13px; font-weight: 700; color: var(--green-deep);
-    user-select: none;
+
+  .drawer-sub-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 12px 14px; border-radius: var(--radius-sm);
+    cursor: pointer; transition: all 0.15s; margin-bottom: 4px;
+    border: 1.5px solid transparent; background: var(--gray-1);
   }
-  .drawer-goal-toggle:hover { background: var(--green-pale); }
-  .drawer-goal-toggle-left { display: flex; align-items: center; gap: 8px; }
-  .drawer-goal-toggle-left::before {
-    content: ''; display: inline-block;
-    width: 7px; height: 7px; background: var(--green-mid); border-radius: 50%;
-  }
-  .drawer-toggle-arrow {
-    font-size: 11px; color: var(--gray-3);
-    transition: transform 0.2s;
-  }
-  .drawer-toggle-arrow.open { transform: rotate(180deg); }
-  .drawer-sub-list {
-    overflow-y: auto;
-    max-height: 0;
-    transition: max-height 0.25s ease;
-    scrollbar-width: none;
-  }
-  .drawer-sub-list::-webkit-scrollbar { display: none; }
-  .drawer-sub-list.open { max-height: 200px; }
+  .drawer-sub-item:hover { background: var(--green-pale); border-color: var(--green-light); }
+  .drawer-sub-item.added { opacity: 0.38; cursor: default; pointer-events: none; }
+  .drawer-sub-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green-light); flex-shrink: 0; }
+  .drawer-sub-text { font-size: 14px; flex: 1; font-weight: 600; }
+  .drawer-sub-check { font-size: 13px; color: var(--green-deep); }
+  .drawer-empty { padding: 20px 18px; color: var(--gray-3); font-size: 13px; text-align: center; }
 
   /* 직접 입력 영역 */
   .drawer-direct-section {
@@ -266,18 +253,6 @@
     flex-shrink: 0; transition: background 0.2s;
   }
   .drawer-direct-btn:hover { background: #155e38; }
-  .drawer-sub-item {
-    display: flex; align-items: center; gap: 10px;
-    padding: 10px 12px; border-radius: var(--radius-sm);
-    cursor: pointer; transition: all 0.15s; margin-bottom: 4px;
-    border: 1.5px solid transparent;
-  }
-  .drawer-sub-item:hover { background: var(--green-pale); border-color: var(--green-light); }
-  .drawer-sub-item.added { opacity: 0.38; cursor: default; pointer-events: none; }
-  .drawer-sub-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green-light); flex-shrink: 0; }
-  .drawer-sub-text { font-size: 14px; flex: 1; }
-  .drawer-sub-check { font-size: 13px; color: var(--green-deep); }
-  .drawer-empty { padding: 20px 18px; color: var(--gray-3); font-size: 13px; text-align: center; }
 
   /* MONTHLY */
   #monthly-screen .screen-content {
@@ -295,10 +270,6 @@
   .donut-container { position: relative; width: 160px; height: 160px; }
   .donut-svg { transform: rotate(-90deg); }
   .donut-bg { fill: none; stroke: var(--gray-2); stroke-width: 18; }
-  .donut-fill-expected {
-    fill: none; stroke: var(--green-light); stroke-width: 18; stroke-linecap: round;
-    stroke-dasharray: 389.56; transition: stroke-dashoffset 0.8s cubic-bezier(.4,0,.2,1);
-  }
   .donut-fill {
     fill: none; stroke: var(--green-mid); stroke-width: 18; stroke-linecap: round;
     transition: stroke-dashoffset 0.8s cubic-bezier(.4,0,.2,1);
@@ -309,9 +280,6 @@
   }
   .donut-pct { font-family: 'Georgia', 'Times New Roman', serif; font-size: 36px; color: var(--text-dark); line-height: 1; }
   .donut-label { font-size: 11px; color: var(--gray-3); margin-top: 2px; }
-  .donut-legend { display: flex; gap: 18px; margin-top: 12px; }
-  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--gray-4); }
-  .legend-dot { width: 10px; height: 10px; border-radius: 50%; }
 
   .goals-section-label {
     font-size: 12px; font-weight: 700; color: var(--gray-3);
@@ -354,11 +322,6 @@
     height: 8px; background: var(--gray-2); border-radius: 10px;
     overflow: hidden; margin-bottom: 6px; position: relative;
   }
-  .gp-expected {
-    position: absolute; top: 0; left: 0; height: 100%;
-    background: var(--green-light); border-radius: 10px;
-    transition: width 0.6s cubic-bezier(.4,0,.2,1);
-  }
   .gp-actual {
     position: absolute; top: 0; left: 0; height: 100%;
     background: linear-gradient(90deg, var(--green-mid), var(--green-deep));
@@ -386,46 +349,6 @@
   .detail-goal-title { font-family: 'Georgia', 'Times New Roman', serif; font-size: 24px; margin-bottom: 4px; }
   .detail-progress-summary { font-size: 13px; color: var(--gray-3); margin-bottom: 20px; }
   .detail-progress-summary span { color: var(--green-deep); font-weight: 600; }
-
-  .subtask-list { display: flex; flex-direction: column; gap: 9px; }
-  .subtask-item {
-    background: var(--gray-1); border-radius: var(--radius-sm);
-    padding: 13px 16px; display: flex; align-items: center; gap: 12px;
-    cursor: pointer; border: 1.5px solid transparent; transition: all 0.18s;
-  }
-  .subtask-item:hover { border-color: var(--green-light); background: var(--green-pale); }
-  .subtask-check {
-    width: 22px; height: 22px; border-radius: 50%;
-    border: 2px solid var(--green-mid); flex-shrink: 0;
-    display: flex; align-items: center; justify-content: center; transition: all 0.2s;
-  }
-  .subtask-check.done { background: var(--green-mid); border-color: var(--green-mid); }
-  .subtask-check.done::after { content: '✓'; color: white; font-size: 12px; font-weight: 700; }
-  .subtask-text { font-size: 14px; flex: 1; }
-  .subtask-text.done { text-decoration: line-through; color: var(--gray-3); }
-  .subtask-del {
-    background: none; border: none; cursor: pointer;
-    color: var(--gray-3); font-size: 15px; padding: 0 2px;
-    opacity: 0; transition: opacity 0.15s, color 0.15s; border-radius: 4px;
-  }
-  .subtask-item:hover .subtask-del { opacity: 1; }
-  .subtask-del:hover { color: var(--red); }
-
-  .add-subtask-form { margin-top: 14px; display: flex; gap: 8px; }
-  .add-subtask-input {
-    flex: 1; background: var(--gray-1); border: 1.5px solid var(--gray-2);
-    border-radius: var(--radius-sm); padding: 12px 16px; font-size: 14px;
-    font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif; color: var(--text-dark);
-    outline: none; transition: border-color 0.2s;
-  }
-  .add-subtask-input:focus { border-color: var(--green-mid); background: var(--white); }
-  .add-subtask-submit {
-    width: 46px; height: 46px; background: var(--green-deep); border: none;
-    border-radius: var(--radius-sm); color: white; font-size: 22px;
-    cursor: pointer; display: flex; align-items: center; justify-content: center;
-    transition: all 0.2s; flex-shrink: 0;
-  }
-  .add-subtask-submit:hover { background: #155e38; }
 
   /* MODALS */
   .modal-overlay {
@@ -524,116 +447,83 @@
   .settings-msg.ok { background: var(--green-pale); color: var(--green-deep); display: block; }
   .settings-msg.err { background: #fdecea; color: var(--red); display: block; }
 
-  /* CARRYOVER */
-  .carryover-item {
-    display: flex; align-items: center; gap: 12px;
+  /* MONTH SELECTOR */
+  .month-select-item {
+    display: flex; align-items: center; justify-content: space-between;
     padding: 12px 14px; border-radius: var(--radius-sm);
     background: var(--gray-1); margin-bottom: 8px;
-    cursor: pointer; border: 1.5px solid transparent; transition: all 0.15s;
+    border: 1.5px solid var(--gray-2); transition: all 0.15s;
   }
-  .carryover-item.selected { background: var(--green-pale); border-color: var(--green-light); }
-  .carryover-check {
-    width: 22px; height: 22px; border-radius: 6px;
-    border: 2px solid var(--gray-2); flex-shrink: 0;
-    display: flex; align-items: center; justify-content: center;
-    transition: all 0.15s;
+  .month-select-item:hover { border-color: var(--green-light); background: var(--green-pale); }
+  .month-select-label { font-size: 14px; font-weight: 600; }
+  .month-select-sub { font-size: 12px; color: var(--gray-3); margin-top: 2px; }
+  .month-select-btn {
+    background: var(--green-deep); color: white; border: none;
+    border-radius: 8px; padding: 7px 14px; font-size: 12px; font-weight: 600;
+    font-family: 'Apple SD Gothic Neo','Noto Sans KR',sans-serif;
+    cursor: pointer; white-space: nowrap; transition: background 0.15s;
   }
-  .carryover-item.selected .carryover-check {
-    background: var(--green-mid); border-color: var(--green-mid); color: white;
-    font-size: 13px; font-weight: 700;
-  }
-  .carryover-item.selected .carryover-check::after { content: '✓'; }
-  .carryover-goal-name { font-size: 14px; font-weight: 600; flex: 1; }
-  .carryover-goal-sub { font-size: 12px; color: var(--gray-3); margin-top: 1px; }
+  .month-select-btn:hover { background: #155e38; }
 
-  /* CAL ICON BUTTON */
-  .cal-icon-btn {
-    position: absolute; top: 50px; right: 28px;
-    width: 36px; height: 36px;
-    background: var(--green-pale); border: none; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    cursor: pointer; font-size: 17px; transition: all 0.2s;
+  /* RANGE INPUT */
+  .range-input {
+    flex: 1; min-width: 0;
+    background: var(--white); border: 1.5px solid var(--gray-2);
+    border-radius: var(--radius-sm); padding: 10px 12px;
+    font-size: 15px; font-weight: 600;
+    font-family: 'Apple SD Gothic Neo','Noto Sans KR',sans-serif;
+    color: var(--text-dark); outline: none; text-align: center;
+    transition: border-color 0.2s;
   }
-  .cal-icon-btn:hover { background: var(--green-light); transform: scale(1.08); }
+  .range-input:focus { border-color: var(--green-mid); }
+  .range-input.unit-input { font-size: 13px; text-align: left; }
 
-  /* CALENDAR SCREEN */
-  #calendar-screen .screen-content {
-    flex: 1; padding: 0 20px 30px; overflow-y: auto; scrollbar-width: none;
+  /* HISTORY ITEM */
+  .history-item {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 16px; background: var(--gray-1);
+    border-radius: var(--radius-sm); margin-bottom: 8px;
+    font-size: 14px;
   }
-  #calendar-screen .screen-content::-webkit-scrollbar { display: none; }
-  .cal-grid-header {
-    display: grid; grid-template-columns: repeat(7,1fr);
-    text-align: center; margin-bottom: 6px;
-  }
-  .cal-grid-header span { font-size: 11px; font-weight: 700; color: var(--gray-3); padding: 4px 0; }
-  .cal-grid-header span:first-child { color: #e57373; }
-  .cal-grid-header span:last-child { color: #5b9bd5; }
-  .cal-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 3px; }
-  .cal-day {
-    aspect-ratio: 1; border-radius: 50%;
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    font-size: 14px; cursor: pointer;
-    transition: all 0.15s; position: relative;
-    border: 1.5px solid transparent;
-  }
-  .cal-day:hover { background: var(--green-pale); }
-  .cal-day.empty { cursor: default; pointer-events: none; }
-  .cal-day.today { background: var(--green-deep); color: white; font-weight: 700; }
-  .cal-day.today:hover { background: #155e38; }
-  .cal-day.has-record { border-color: var(--green-light); }
-  .cal-day.has-record::after {
-    content: ''; position: absolute; bottom: 5px;
-    width: 5px; height: 5px; border-radius: 50%; background: var(--green-mid);
-  }
-  .cal-day.today.has-record::after { background: rgba(255,255,255,0.7); }
-  .cal-day.sunday { color: #e57373; }
-  .cal-day.saturday { color: #5b9bd5; }
-  .cal-day.today.sunday, .cal-day.today.saturday { color: white; }
-  .cal-day.past-done { background: var(--green-pale); }
+  .history-date { font-size: 12px; color: var(--gray-3); font-weight: 500;}
+  .history-range { font-weight: 600; }
 
-  /* DAY RECORD SCREEN */
-  #dayrecord-screen .screen-content {
-    flex: 1; padding: 0 22px 30px; overflow-y: auto; scrollbar-width: none;
+  /* NEW DAILY TASK */
+  .daily-task-main {
+    display: flex; align-items: center; gap: 11px; padding: 12px 14px; cursor: pointer;
   }
-  #dayrecord-screen .screen-content::-webkit-scrollbar { display: none; }
-  .dayrecord-date {
-    font-family: 'Georgia','Times New Roman',serif;
-    font-size: 60px; line-height: 1; letter-spacing: -2px; margin-bottom: 4px;
+  .daily-task-name { font-size: 14px; color: var(--text-dark); font-weight: 600; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .daily-range-wrap { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+  
+  /* 분량 입력 칸 통일화 (왼쪽/오른쪽 색상 동일) */
+  .daily-range-fixed, .daily-range-input {
+    background: var(--white); border: 1.5px solid var(--gray-2);
+    border-radius: 8px; padding: 7px 10px;
+    font-size: 14px; font-weight: 600; color: var(--text-dark);
+    min-width: 44px; text-align: center;
+    font-family: 'Apple SD Gothic Neo','Noto Sans KR',sans-serif;
   }
-  .dayrecord-sub { font-size: 14px; color: var(--gray-3); font-weight: 300; margin-bottom: 20px; }
-  .dayrecord-empty {
-    text-align: center; color: var(--gray-3); font-size: 13px;
-    padding: 50px 0; line-height: 2.2;
+  .daily-range-fixed {
+    color: var(--text-dark);
+    user-select: none;
   }
-  .dayrecord-empty .icon { font-size: 28px; display: block; margin-bottom: 8px; }
-  .record-task-item {
-    background: var(--gray-1); border-radius: var(--radius-sm);
-    padding: 13px 16px; margin-bottom: 9px;
-    display: flex; align-items: center; gap: 12px;
+  .daily-range-input {
+    width: 60px; outline: none; transition: border-color 0.2s;
   }
-  .record-check {
-    width: 22px; height: 22px; border-radius: 50%; flex-shrink: 0;
-    display: flex; align-items: center; justify-content: center;
-  }
-  .record-check.done { background: var(--green-mid); color: white; font-size: 12px; font-weight: 700; }
-  .record-check.done::after { content: '✓'; }
-  .record-check.undone { border: 2px solid var(--gray-2); }
-  .record-task-text { font-size: 14px; flex: 1; }
-  .record-task-text.done { text-decoration: line-through; color: var(--gray-3); }
-  .record-task-tag {
-    font-size: 11px; background: var(--green-pale); color: var(--green-deep);
-    padding: 3px 9px; border-radius: 20px; font-weight: 500; white-space: nowrap;
-  }
+  .daily-range-input:focus { border-color: var(--green-mid); }
+  .daily-unit { font-size: 13px; color: var(--gray-4); flex-shrink: 0; font-weight: 500;}
+  
+  .daily-task-item.done-item .daily-task-name,
+  .daily-task-item.done-item .daily-range-fixed,
+  .daily-task-item.done-item .daily-range-input { color: var(--gray-3); text-decoration: line-through; }
+
 </style>
 </head>
 <body>
 
-<!-- DAILY -->
 <div id="daily-screen" class="screen active">
   <div class="screen-header">
     <button class="settings-btn" onclick="showSettings()" title="설정">⚙️</button>
-    <button class="cal-icon-btn" onclick="showCalendar()" title="달력">📅</button>
     <button class="month-btn" onclick="showMonthly()">
       <span id="daily-month-label">3월</span>
       <span class="arrow">↑</span>
@@ -646,25 +536,24 @@
     <div class="daily-tasks-box" id="daily-tasks-box">
       <div class="daily-box-header">
         <span class="box-label">오늘의 학습</span>
-        <button class="add-task-btn" id="add-task-btn" onclick="toggleDrawer(event)" title="세부 목표 추가">+</button>
+        <button class="add-task-btn" id="add-task-btn" onclick="toggleDrawer(event)" title="목표 추가">+</button>
       </div>
       <div id="daily-task-list"></div>
       <div id="daily-empty" class="empty-hint">
         <span class="icon">📚</span>
-        오른쪽 <strong style="color:var(--green-deep)">+</strong> 버튼으로<br>오늘의 세부 목표를 추가해보세요
+        오른쪽 <strong style="color:var(--green-deep)">+</strong> 버튼으로<br>오늘의 목표 분량을 추가해보세요
       </div>
 
-      <!-- Drawer -->
       <div class="subtask-drawer" id="subtask-drawer">
         <div class="drawer-header">
-          <span class="drawer-title">오늘 학습 추가</span>
+          <span class="drawer-title">목표 불러오기</span>
           <button class="drawer-close" onclick="closeDrawer()">✕</button>
         </div>
-        <div id="drawer-content"></div>
+        <div class="drawer-goal-section" id="drawer-content"></div>
         <div class="drawer-direct-section">
-          <div class="drawer-direct-label">직접 입력</div>
+          <div class="drawer-direct-label">직접 입력 (진행률 반영X)</div>
           <div class="drawer-direct-row">
-            <input class="drawer-direct-input" id="drawer-direct-input" type="text" placeholder="직접 입력하기">
+            <input class="drawer-direct-input" id="drawer-direct-input" type="text" placeholder="직접 할 일 입력하기">
             <button class="drawer-direct-btn" onclick="addDirectTask()">+</button>
           </div>
         </div>
@@ -673,7 +562,6 @@
   </div>
 </div>
 
-<!-- SETTINGS -->
 <div id="settings-screen" class="screen">
   <div class="screen-header">
     <button class="back-btn" onclick="showDaily()">← 돌아가기</button>
@@ -681,64 +569,26 @@
   </div>
   <div class="screen-content">
     <div class="settings-section-title">데이터 관리</div>
-
     <div class="settings-card">
       <div class="settings-card-title">📤 데이터 내보내기</div>
-      <div class="settings-card-desc">지금 저장된 목표 데이터를 텍스트로 복사해두면 나중에 복구할 수 있어요.</div>
+      <div class="settings-card-desc">저장된 데이터를 복사해두면 나중에 복구할 수 있어요.</div>
       <div class="settings-btn-row">
         <button class="settings-action-btn primary" onclick="exportData()">데이터 복사하기</button>
       </div>
       <div class="settings-msg" id="export-msg"></div>
       <textarea class="settings-textarea" id="export-area" readonly placeholder="여기에 데이터가 표시돼요" style="margin-top:10px;"></textarea>
     </div>
-
     <div class="settings-card">
-      <div class="settings-card-title">📥 데이터 가져오기</div>
-      <div class="settings-card-desc">이전에 복사해둔 데이터를 아래에 붙여넣고 가져오기를 누르세요. 기존 데이터는 덮어써져요.</div>
+      <div class="settings-card-title">📥 이전 달 목표 불러오기</div>
+      <div class="settings-card-desc">저장된 월을 선택하면 해당 달의 목표를 이번 달로 가져와요.</div>
       <div class="settings-msg" id="import-msg"></div>
-      <textarea class="settings-textarea" id="import-area" placeholder="데이터를 여기에 붙여넣기 하세요"></textarea>
-      <div class="settings-btn-row">
-        <button class="settings-action-btn secondary" onclick="clearImport()">지우기</button>
-        <button class="settings-action-btn primary" onclick="importData()">가져오기</button>
-      </div>
+      <div id="month-selector-list" style="margin-bottom:12px;"></div>
     </div>
-
     <div class="settings-section-title">저장된 데이터 현황</div>
     <div class="settings-card" id="data-status"></div>
   </div>
 </div>
 
-<!-- CALENDAR -->
-<div id="calendar-screen" class="screen">
-  <div class="screen-header">
-    <button class="back-btn" onclick="showDaily()">← 돌아가기</button>
-    <div style="display:flex;align-items:center;gap:12px;">
-      <button onclick="moveCalMonth(-1)" style="background:none;border:none;font-size:20px;cursor:pointer;color:var(--gray-4);padding:4px 8px;">‹</button>
-      <div class="detail-goal-title" id="cal-title">3월</div>
-      <button onclick="moveCalMonth(1)" style="background:none;border:none;font-size:20px;cursor:pointer;color:var(--gray-4);padding:4px 8px;">›</button>
-    </div>
-  </div>
-  <div class="screen-content">
-    <div class="cal-grid-header">
-      <span>일</span><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span>
-    </div>
-    <div class="cal-grid" id="cal-grid"></div>
-  </div>
-</div>
-
-<!-- DAY RECORD -->
-<div id="dayrecord-screen" class="screen">
-  <div class="screen-header">
-    <button class="back-btn" onclick="showCalendar()">← 달력</button>
-    <div class="dayrecord-date" id="dayrecord-date"></div>
-    <div class="dayrecord-sub" id="dayrecord-sub"></div>
-  </div>
-  <div class="screen-content">
-    <div id="dayrecord-list"></div>
-  </div>
-</div>
-
-<!-- MONTHLY -->
 <div id="monthly-screen" class="screen">
   <div class="screen-header">
     <button class="month-btn" onclick="showDaily()">
@@ -772,7 +622,6 @@
   </div>
 </div>
 
-<!-- DETAIL -->
 <div id="detail-screen" class="screen">
   <div class="screen-header">
     <button class="back-btn" onclick="showMonthly()">← 돌아가기</button>
@@ -780,25 +629,36 @@
     <div class="detail-progress-summary" id="detail-summary"></div>
   </div>
   <div class="screen-content">
-    <div class="subtask-list" id="subtask-list"></div>
-    <div class="add-subtask-form">
-      <input class="add-subtask-input" id="subtask-input" type="text" placeholder="세부 목표 추가 (예: 1강, 2단원)">
-      <button class="add-subtask-submit" onclick="addSubtask()">+</button>
+    <div id="detail-range-section" style="background:var(--gray-1);border-radius:var(--radius);padding:16px 18px;margin-bottom:16px;">
+      <div style="font-size:11px;font-weight:700;color:var(--gray-3);letter-spacing:0.08em;margin-bottom:12px;">전체 분량 수정</div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <input id="detail-from-input" type="number" class="range-input" placeholder="시작">
+        <span style="color:var(--gray-3);">~</span>
+        <input id="detail-to-input" type="number" class="range-input" placeholder="끝">
+        <input id="detail-unit-input" type="text" class="range-input unit-input" placeholder="단위">
+        <button class="tbtn start" style="flex:none;padding:10px 14px;font-size:13px;" onclick="saveDetailRange()">저장</button>
+      </div>
     </div>
+    <div style="font-size:11px;font-weight:700;color:var(--gray-3);letter-spacing:0.08em;margin-bottom:10px;">학습 기록</div>
+    <div id="detail-history-list"></div>
   </div>
 </div>
 
-<!-- MODAL: Add/Edit Goal -->
 <div class="modal-overlay" id="goal-modal" onclick="closeGoalModal(event)">
   <div class="modal-sheet">
     <div class="modal-title" id="goal-modal-title">새 목표 추가</div>
-    <input class="modal-input" id="goal-modal-name" type="text" placeholder="목표 이름 (예: 올오카 완강하기)">
+    <input class="modal-input" id="goal-modal-name" type="text" placeholder="목표 이름 (예: 언매 강의)">
+    <div style="display:flex;gap:8px;margin-bottom:10px;align-items:center;">
+      <input class="modal-input" id="goal-modal-from" type="number" placeholder="시작 번호 (예: 1)" style="margin:0;flex:1;min-width:0;">
+      <span style="color:var(--gray-3);flex-shrink:0;">~</span>
+      <input class="modal-input" id="goal-modal-to" type="number" placeholder="끝 번호 (예: 36)" style="margin:0;flex:1;min-width:0;">
+      <input class="modal-input" id="goal-modal-unit" type="text" placeholder="단위(강, 쪽...)" style="margin:0;flex:1.2;min-width:0;">
+    </div>
     <button class="modal-submit" onclick="submitGoalModal()">저장하기</button>
     <button class="modal-cancel" onclick="closeGoalModal()">취소</button>
   </div>
 </div>
 
-<!-- MODAL: Delete Confirm -->
 <div class="modal-overlay" id="delete-modal" onclick="closeDeleteModal(event)">
   <div class="modal-sheet">
     <div class="modal-title" id="delete-modal-title">목표 삭제</div>
@@ -810,9 +670,8 @@
   </div>
 </div>
 
-
 <script>
-// ===== 실제 날짜 자동 적용 =====
+// ===== DATE LOGIC =====
 const today = new Date();
 const currentMonth = today.getMonth();
 const currentYear = today.getFullYear();
@@ -821,17 +680,25 @@ const daysPassed = today.getDate();
 const MONTHS_KR = ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'];
 const DAYS_KR = ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'];
 
-// 월 키: "2026-4" 형식으로 월별 목표 분리 저장
 const monthKey = currentYear + '-' + (currentMonth + 1);
-const todayKey = currentYear + '-' + (currentMonth+1) + '-' + today.getDate();
+const todayKey = (currentMonth + 1) + '/' + today.getDate(); // 6/4 형태
 
 // ===== STORAGE =====
-// 목표는 월별로 저장: sp_goals_2026-4
-const STORAGE_KEY_GOALS = 'sp_goals_' + monthKey;
-const STORAGE_KEY_NEXT_GOAL_ID = 'sp_nextGoalId_' + monthKey;
-const STORAGE_KEY_DAILY = 'sp_daily';
-const STORAGE_KEY_DAILY_DATE = 'sp_dailyDate';
-const STORAGE_KEY_DAILY_NEXT_ID = 'sp_dailyNextId';
+const STORAGE_KEY_GOALS = 'sp_goals_v2_' + monthKey; 
+const STORAGE_KEY_NEXT_GOAL_ID = 'sp_nextGoalId_v2_' + monthKey;
+const STORAGE_KEY_DAILY = 'sp_daily_v2';
+const STORAGE_KEY_DAILY_DATE = 'sp_dailyDate_v2';
+const STORAGE_KEY_DAILY_NEXT_ID = 'sp_dailyNextId_v2';
+
+let goals = [];
+let nextGoalId = 1;
+let dailyTasks = [];
+let dailyTaskNextId = 1;
+let drawerOpen = false;
+let currentDetailGoalId = null;
+let goalModalMode = 'add';
+let goalModalEditId = null;
+let deleteTargetId = null;
 
 function saveData() {
   try {
@@ -840,101 +707,37 @@ function saveData() {
     localStorage.setItem(STORAGE_KEY_DAILY, JSON.stringify(dailyTasks));
     localStorage.setItem(STORAGE_KEY_DAILY_DATE, todayKey);
     localStorage.setItem(STORAGE_KEY_DAILY_NEXT_ID, dailyTaskNextId);
-    localStorage.setItem('sp_dailyAddedKeys', JSON.stringify([...dailyAddedKeys]));
-    localStorage.setItem('sp_taskTimers', JSON.stringify(taskTimers));
+    localStorage.setItem('sp_taskTimers_v2', JSON.stringify(taskTimers));
   } catch(e) { console.warn('저장 실패', e); }
 }
 
 function loadData() {
   try {
-    const oldGoals = localStorage.getItem('sp_goals');
-    if (oldGoals && !localStorage.getItem(STORAGE_KEY_GOALS)) {
-      localStorage.setItem(STORAGE_KEY_GOALS, oldGoals);
-      const oldNextId = localStorage.getItem('sp_nextGoalId');
-      if (oldNextId) localStorage.setItem(STORAGE_KEY_NEXT_GOAL_ID, oldNextId);
-    }
-
     const savedGoals = localStorage.getItem(STORAGE_KEY_GOALS);
     if (savedGoals !== null) {
       goals = JSON.parse(savedGoals);
-      
-      // [버그 수정] ID 중복 방지 및 자가 치유 로직
       let maxId = 0;
       goals.forEach(g => { if (g.id > maxId) maxId = g.id; });
-      
-      let usedIds = new Set();
-      goals.forEach(g => {
-        if (usedIds.has(g.id)) {
-          maxId++;
-          g.id = maxId; // 중복된 ID가 발견되면 즉시 새로운 ID 부여
-        }
-        usedIds.add(g.id);
-      });
-      
       const loadedNextId = parseInt(localStorage.getItem(STORAGE_KEY_NEXT_GOAL_ID));
       nextGoalId = (!isNaN(loadedNextId) && loadedNextId > maxId) ? loadedNextId : maxId + 1;
-      
-    } else {
-      checkCarryover();
     }
     
     const savedDate = localStorage.getItem(STORAGE_KEY_DAILY_DATE);
     if (savedDate === todayKey) {
       const savedDaily = localStorage.getItem(STORAGE_KEY_DAILY);
       if (savedDaily) dailyTasks = JSON.parse(savedDaily);
-      
-      // 일일 태스크 ID도 안전하게 관리
       let maxTaskId = 0;
       dailyTasks.forEach(t => { if (t.id > maxTaskId) maxTaskId = t.id; });
       let loadedDailyNextId = parseInt(localStorage.getItem(STORAGE_KEY_DAILY_NEXT_ID));
       dailyTaskNextId = (!isNaN(loadedDailyNextId) && loadedDailyNextId > maxTaskId) ? loadedDailyNextId : maxTaskId + 1;
       
-      const savedKeys = localStorage.getItem('sp_dailyAddedKeys');
-      if (savedKeys) dailyAddedKeys = new Set(JSON.parse(savedKeys));
-      const savedTimers = localStorage.getItem('sp_taskTimers');
+      const savedTimers = localStorage.getItem('sp_taskTimers_v2');
       if (savedTimers) taskTimers = JSON.parse(savedTimers);
     } else {
-      localStorage.removeItem('sp_taskTimers');
+      localStorage.removeItem('sp_taskTimers_v2');
     }
   } catch(e) { console.warn('데이터 로드 중 오류 발생:', e); }
 }
-
-
-// ===== CARRYOVER =====
-let carryoverSelected = new Set();
-let carryoverGoals = [];
-
-function getPrevMonthKey() {
-  let m = currentMonth - 1, y = currentYear;
-  if (m < 0) { m = 11; y--; }
-  return y + '-' + (m + 1);
-}
-
-function checkCarryover() {
-  const prevKey = 'sp_goals_' + getPrevMonthKey();
-  const oldKey = 'sp_goals';
-  const prevData = localStorage.getItem(prevKey) || localStorage.getItem(oldKey);
-  if (!prevData) return;
-  try {
-    const prevGoals = JSON.parse(prevData);
-    if (prevGoals.length === 0) return;
-    goals = prevGoals;
-    nextGoalId = goals.length > 0 ? Math.max(...goals.map(g => g.id)) + 1 : 1;
-    saveData();
-  } catch(e) {}
-}
-
-
-let goals = [];
-let nextGoalId = 1;
-let dailyTasks = [];
-let dailyAddedKeys = new Set();
-let dailyTaskNextId = 1;
-let drawerOpen = false;
-let currentDetailGoalId = null;
-let goalModalMode = 'add';
-let goalModalEditId = null;
-let deleteTargetId = null;
 
 function init() {
   loadData();
@@ -945,7 +748,7 @@ function init() {
   const mo = MONTHS_KR[currentMonth];
   document.getElementById('daily-month-label').textContent = mo;
   document.getElementById('monthly-month-label').textContent = mo;
-  document.getElementById('cal-title').textContent = mo;
+  
   renderDailyTasks();
   renderGoalCards();
   updateDonut();
@@ -960,11 +763,11 @@ function showMonthly() { renderGoalCards(); updateDonut(); showScreen('monthly-s
 function showDaily() { renderDailyTasks(); showScreen('daily-screen'); }
 function showDetail(goalId) {
   currentDetailGoalId = goalId;
-  renderSubtaskList();
+  renderDetailScreen();
   showScreen('detail-screen');
 }
 
-// DRAWER
+// ===== DRAWER =====
 function toggleDrawer(e) {
   e.stopPropagation();
   if (drawerOpen) { closeDrawer(); return; }
@@ -983,59 +786,48 @@ function outsideDrawerClick(e) {
   const btn = document.getElementById('add-task-btn');
   if (!drawer.contains(e.target) && e.target !== btn) closeDrawer();
 }
-let drawerOpenSections = new Set(); // 토글 열린 섹션 id 관리
 
 function renderDrawer() {
   const content = document.getElementById('drawer-content');
   content.innerHTML = '';
   let anyItem = false;
+  
   goals.forEach(goal => {
-    const avail = goal.subtasks.filter(s => !s.done);
-    if (avail.length === 0) return;
+    if (!goal.rangeTo) return; // 분량 설정된 목표만 표시
     anyItem = true;
-    const isOpen = drawerOpenSections.has(goal.id);
-    const sec = document.createElement('div');
-    sec.className = 'drawer-goal-section';
-
-    // 토글 헤더
-    const toggle = document.createElement('div');
-    toggle.className = 'drawer-goal-toggle';
-    const added = avail.filter(s => dailyAddedKeys.has(goal.id + '_' + s.id)).length;
-    toggle.innerHTML = `
-      <span class="drawer-goal-toggle-left">${goal.name}</span>
-      <span style="display:flex;align-items:center;gap:6px;">
-        ${added > 0 ? `<span style="font-size:11px;color:var(--green-deep);font-weight:600;">${added}개 추가됨</span>` : ''}
-        <span class="drawer-toggle-arrow ${isOpen ? 'open' : ''}">▼</span>
-      </span>
+    
+    // 오늘 이미 추가된 목표인지 확인
+    const isAdded = dailyTasks.some(t => t.goalId === goal.id);
+    const item = document.createElement('div');
+    item.className = 'drawer-sub-item' + (isAdded ? ' added' : '');
+    item.innerHTML = `
+      <div class="drawer-sub-dot"></div>
+      <span class="drawer-sub-text">${goal.name}</span>
+      ${isAdded ? '<span class="drawer-sub-check">✓</span>' : ''}
     `;
-    toggle.onclick = (e) => {
-      e.stopPropagation();
-      if (drawerOpenSections.has(goal.id)) drawerOpenSections.delete(goal.id);
-      else drawerOpenSections.add(goal.id);
-      renderDrawer();
-    };
-    sec.appendChild(toggle);
-
-    // 세부 목표 리스트 (토글)
-    const subList = document.createElement('div');
-    subList.className = 'drawer-sub-list' + (isOpen ? ' open' : '');
-    avail.forEach(sub => {
-      const key = goal.id + '_' + sub.id;
-      const item = document.createElement('div');
-      const isAdded = dailyAddedKeys.has(key);
-      item.className = 'drawer-sub-item' + (isAdded ? ' added' : '');
-      item.innerHTML = `<div class="drawer-sub-dot"></div><span class="drawer-sub-text">${sub.text}</span>${isAdded ? '<span class="drawer-sub-check">✓</span>' : ''}`;
-      if (!isAdded) {
-        item.onclick = (e) => { e.stopPropagation(); addDailyTask(goal, sub, key, item); };
-      }
-      subList.appendChild(item);
-    });
-    sec.appendChild(subList);
-    content.appendChild(sec);
+    
+    if (!isAdded) {
+      item.onclick = (e) => { e.stopPropagation(); addDailyRangeTask(goal, item); };
+    }
+    content.appendChild(item);
   });
+  
   if (!anyItem) {
-    content.innerHTML = '<div class="drawer-empty">세부 목표를 먼저 추가해보세요</div>';
+    content.innerHTML = '<div class="drawer-empty">월 목표에 목표 분량을 먼저 설정해주세요</div>';
   }
+}
+
+function addDailyRangeTask(goal, itemEl) {
+  itemEl.classList.add('added');
+  itemEl.innerHTML = `<div class="drawer-sub-dot"></div><span class="drawer-sub-text">${goal.name}</span><span class="drawer-sub-check">✓</span>`;
+  dailyTasks.push({
+    id: dailyTaskNextId++,
+    text: goal.name,
+    goalId: goal.id,
+    done: false,
+    targetValue: null
+  });
+  renderDailyTasks(); saveData();
 }
 
 function addDirectTask() {
@@ -1045,41 +837,58 @@ function addDirectTask() {
   dailyTasks.push({
     id: dailyTaskNextId++,
     text: text,
-    tag: '',
     goalId: null,
-    subtaskId: null,
     done: false
   });
   input.value = '';
-  renderDailyTasks(); saveData(); saveHistory();
+  renderDailyTasks(); saveData();
 }
 
-// DAILY
+// ===== DAILY TASKS =====
 function renderDailyTasks() {
   const list = document.getElementById('daily-task-list');
   const empty = document.getElementById('daily-empty');
   list.innerHTML = '';
   empty.style.display = dailyTasks.length === 0 ? 'block' : 'none';
+  
   dailyTasks.forEach(task => {
     const div = document.createElement('div');
-    div.className = 'daily-task-item';
+    div.className = 'daily-task-item' + (task.done ? ' done-item' : '');
     const t = taskTimers[task.id] || { totalSec: 0, sessions: 0 };
     const timeLabel = formatTimerLabel(t.totalSec);
     const isExpanded = expandedTaskId === task.id;
     const isRunning = activeTimerId === task.id;
     const isPaused = pausedTimerId === task.id;
-
-    // 원형 타이머 진행도
-    const C = 163;
+    
+    // Timer text
     const remaining = timerRemaining[task.id] !== undefined ? timerRemaining[task.id] : 300;
-    const offset = C - (C * (300 - remaining) / 300);
+    const offset = 163 - (163 * (300 - remaining) / 300);
     const timerDisplayText = isRunning || isPaused ? formatSeconds(remaining) : (t.sessions > 0 ? '✓' : '5:00');
     const sessionLabel = isRunning ? `${t.sessions + 1}회차 진행 중` : isPaused ? `${t.sessions + 1}회차 일시정지` : t.sessions > 0 ? `${t.sessions}회 완료` : '0회 · 누적 0분';
 
+    const goal = task.goalId ? goals.find(g => g.id === task.goalId) : null;
+    let mainContentHTML = '';
+    
+    if (goal) {
+      // 분량 기반 목표 항목
+      mainContentHTML = `
+        <span class="daily-task-name">${task.text}</span>
+        <div class="daily-range-wrap" onclick="event.stopPropagation()">
+          <div class="daily-range-fixed">${goal.current}</div>
+          <span style="color:var(--gray-3);font-size:14px;font-weight:600;">~</span>
+          <input type="number" class="daily-range-input" id="range-input-${task.id}" value="${task.targetValue !== null ? task.targetValue : ''}" ${task.done ? 'disabled' : ''} placeholder="">
+          <span class="daily-unit">${goal.unit}</span>
+        </div>
+      `;
+    } else {
+      // 직접 입력한 항목
+      mainContentHTML = `<span class="daily-task-name" style="font-weight:400; font-size:14px; text-decoration: ${task.done ? 'line-through' : 'none'}; color: ${task.done ? 'var(--gray-3)' : 'inherit'}">${task.text}</span>`;
+    }
+
     div.innerHTML = `
-      <div class="daily-task-main" onclick="toggleTaskExpand(${task.id})" style="display:flex;align-items:center;gap:11px;padding:12px 14px;cursor:pointer;">
+      <div class="daily-task-main" onclick="toggleTaskExpand(${task.id})">
         <div class="daily-task-check ${task.done ? 'done' : ''}" onclick="event.stopPropagation();toggleDailyTask(${task.id})"></div>
-        <span class="daily-task-text ${task.done ? 'done' : ''}">${task.text}</span>
+        ${mainContentHTML}
         ${timeLabel ? `<span class="task-time-badge">${timeLabel}</span>` : ''}
         <button class="daily-task-remove" onclick="event.stopPropagation();removeDailyTask(${task.id})">✕</button>
       </div>
@@ -1106,10 +915,8 @@ function renderDailyTasks() {
             ? `<button class="tbtn start" onclick="resumeTimer(${task.id})">▶ 계속하기</button>
                <button class="tbtn gray" onclick="stopTimer(${task.id})">그만하기</button>`
             : t.sessions > 0
-            ? `<button class="tbtn plus" onclick="startTimer(${task.id})">+5분 더</button>
-               <button class="tbtn gray" onclick="completeTask(${task.id})">오늘 완료</button>`
-            : `<button class="tbtn start" onclick="startTimer(${task.id})">▶ 5분 시작</button>
-               <button class="tbtn gray" onclick="completeTask(${task.id})">완료</button>`
+            ? `<button class="tbtn plus" onclick="startTimer(${task.id})">+5분 더</button>`
+            : `<button class="tbtn start" onclick="startTimer(${task.id})">▶ 5분 시작</button>`
           }
         </div>
       </div>
@@ -1117,228 +924,102 @@ function renderDailyTasks() {
     list.appendChild(div);
   });
 }
-function addDailyTask(goal, sub, key, itemEl) {
-  dailyAddedKeys.add(key);
-  itemEl.classList.add('added');
-  itemEl.innerHTML = `<div class="drawer-sub-dot"></div><span class="drawer-sub-text">${sub.text}</span><span class="drawer-sub-check">✓</span>`;
-  dailyTasks.push({
-    id: dailyTaskNextId++,
-    text: goal.name + ' · ' + sub.text,
-    tag: sub.text,
-    goalId: goal.id, subtaskId: sub.id, done: false
-  });
-  renderDailyTasks(); saveData(); saveHistory();
-}
+
 function removeDailyTask(taskId) {
-  const task = dailyTasks.find(t => t.id === taskId);
-  if (!task) return;
-  if (task.goalId !== null) {
-    const key = task.goalId + '_' + task.subtaskId;
-    dailyAddedKeys.delete(key);
-  }
   dailyTasks = dailyTasks.filter(t => t.id !== taskId);
-  renderDailyTasks(); saveData(); saveHistory();
+  renderDailyTasks(); saveData();
 }
+
 function toggleDailyTask(taskId) {
   const task = dailyTasks.find(t => t.id === taskId);
   if (!task) return;
-  task.done = !task.done;
-  const goal = goals.find(g => g.id === task.goalId);
-  if (goal) { const sub = goal.subtasks.find(s => s.id === task.subtaskId); if (sub) sub.done = task.done; }
-  renderDailyTasks(); saveData(); saveHistory();
+  const goal = task.goalId ? goals.find(g => g.id === task.goalId) : null;
+
+  if (!task.done) {
+    if (goal) {
+      const inputEl = document.getElementById('range-input-' + taskId);
+      const targetVal = parseFloat(inputEl.value);
+      
+      if (isNaN(targetVal)) {
+        alert('오늘 학습을 완료할 목표 분량(숫자)을 빈칸에 입력해주세요.');
+        return;
+      }
+      if (targetVal <= goal.current) {
+         alert('이전 완료 분량보다 큰 숫자를 입력해주세요.');
+         return;
+      }
+      
+      task.targetValue = targetVal;
+      goal.history.push({
+        date: todayKey,
+        from: goal.current,
+        to: targetVal,
+        taskId: task.id // 나중에 체크 해제 시 삭제하기 위함
+      });
+      goal.current = targetVal;
+    }
+    task.done = true;
+  } else {
+    // 언체크(완료 취소) 처리
+    if (goal) {
+      // 마지막 히스토리가 현재 이 태스크로 인해 생성된 것이라면 롤백
+      const lastHist = goal.history[goal.history.length - 1];
+      if (lastHist && lastHist.taskId === task.id) {
+        goal.current = lastHist.from;
+        goal.history.pop();
+      }
+      task.targetValue = null;
+    }
+    task.done = false;
+  }
+  renderDailyTasks(); renderGoalCards(); updateDonut(); saveData();
 }
 
-// ===== TIMER =====
+
+// ===== TIMER LOGIC ===== (기존과 동일하게 유지)
 let taskTimers = {};
 let timerRemaining = {};
 let activeTimerId = null;
 let pausedTimerId = null;
 let timerInterval = null;
 let expandedTaskId = null;
-let toastTaskId = null;
 let audioCtx = null;
-let pendingBeep = false; // 터치 때 울려야 할 소리 대기 중
+let pendingBeep = false; 
 
-function getAudioCtx() {
-  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  return audioCtx;
-}
-
-function _doBeep(ctx) {
-  try {
-    [0, 0.3, 0.6].forEach(delay => {
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.connect(gain); gain.connect(ctx.destination);
-      osc.frequency.value = 880;
-      gain.gain.setValueAtTime(0.35, ctx.currentTime + delay);
-      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + delay + 0.3);
-      osc.start(ctx.currentTime + delay);
-      osc.stop(ctx.currentTime + delay + 0.3);
-    });
-  } catch(e) {}
-}
-
-function playBeep() {
-  // iOS: 터치 이벤트 안이면 바로 재생, 아니면 대기 플래그
-  try {
-    const ctx = getAudioCtx();
-    if (ctx.state === 'running') {
-      _doBeep(ctx);
-    } else {
-      pendingBeep = true; // 다음 터치 때 재생
-      ctx.resume().then(() => { _doBeep(ctx); pendingBeep = false; }).catch(() => {});
-    }
-  } catch(e) { pendingBeep = true; }
-}
-
-// 모든 터치/클릭에서 AudioContext 잠금 해제 + 대기 중인 소리 재생
-function handleUserGesture() {
-  try {
-    const ctx = getAudioCtx();
-    if (ctx.state === 'suspended') ctx.resume();
-    if (pendingBeep) {
-      pendingBeep = false;
-      _doBeep(ctx);
-    }
-  } catch(e) {}
-}
+function getAudioCtx() { if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); return audioCtx; }
+function _doBeep(ctx) { try { [0, 0.3, 0.6].forEach(delay => { const osc = ctx.createOscillator(); const gain = ctx.createGain(); osc.connect(gain); gain.connect(ctx.destination); osc.frequency.value = 880; gain.gain.setValueAtTime(0.35, ctx.currentTime + delay); gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + delay + 0.3); osc.start(ctx.currentTime + delay); osc.stop(ctx.currentTime + delay + 0.3); }); } catch(e) {} }
+function playBeep() { try { const ctx = getAudioCtx(); if (ctx.state === 'running') { _doBeep(ctx); } else { pendingBeep = true; ctx.resume().then(() => { _doBeep(ctx); pendingBeep = false; }).catch(() => {}); } } catch(e) { pendingBeep = true; } }
+function handleUserGesture() { try { const ctx = getAudioCtx(); if (ctx.state === 'suspended') ctx.resume(); if (pendingBeep) { pendingBeep = false; _doBeep(ctx); } } catch(e) {} }
 document.addEventListener('touchstart', handleUserGesture, { passive: true });
 document.addEventListener('touchend', handleUserGesture, { passive: true });
 document.addEventListener('click', handleUserGesture, { passive: true });
 
-function formatSeconds(s) {
-  const m = Math.floor(s / 60), sec = s % 60;
-  return m + ':' + String(sec).padStart(2, '0');
-}
-function formatTimerLabel(totalSec) {
-  if (!totalSec || totalSec === 0) return '';
-  const m = Math.floor(totalSec / 60);
-  if (m < 60) return m + 'm';
-  const h = Math.floor(m / 60), rm = m % 60;
-  return rm > 0 ? h + 'h ' + rm + 'm' : h + 'h';
-}
-
-function toggleTaskExpand(taskId) {
-  expandedTaskId = expandedTaskId === taskId ? null : taskId;
-  renderDailyTasks();
-}
+function formatSeconds(s) { const m = Math.floor(s / 60), sec = s % 60; return m + ':' + String(sec).padStart(2, '0'); }
+function formatTimerLabel(totalSec) { if (!totalSec || totalSec === 0) return ''; const m = Math.floor(totalSec / 60); if (m < 60) return m + 'm'; const h = Math.floor(m / 60), rm = m % 60; return rm > 0 ? h + 'h ' + rm + 'm' : h + 'h'; }
+function toggleTaskExpand(taskId) { expandedTaskId = expandedTaskId === taskId ? null : taskId; renderDailyTasks(); }
 
 function startTimer(taskId) {
   if (activeTimerId && activeTimerId !== taskId) stopTimer(activeTimerId);
-  activeTimerId = taskId;
-  pausedTimerId = null;
+  activeTimerId = taskId; pausedTimerId = null;
   if (!timerRemaining[taskId]) timerRemaining[taskId] = 300;
   expandedTaskId = taskId;
   if (!taskTimers[taskId]) taskTimers[taskId] = { totalSec: 0, sessions: 0 };
-  runTick(taskId);
-  renderDailyTasks();
+  runTick(taskId); renderDailyTasks();
 }
-
-function runTick(taskId) {
-  clearInterval(timerInterval);
-  timerInterval = setInterval(() => {
-    if (timerRemaining[taskId] > 0) {
-      timerRemaining[taskId]--;
-      updateTimerUI(taskId);
-    } else {
-      clearInterval(timerInterval);
-      onTimerDone(taskId);
-    }
-  }, 1000);
-}
-
+function runTick(taskId) { clearInterval(timerInterval); timerInterval = setInterval(() => { if (timerRemaining[taskId] > 0) { timerRemaining[taskId]--; updateTimerUI(taskId); } else { clearInterval(timerInterval); onTimerDone(taskId); } }, 1000); }
 function updateTimerUI(taskId) {
-  const remaining = timerRemaining[taskId];
-  const C = 163;
-  const offset = C - (C * (300 - remaining) / 300);
-  const ring = document.getElementById('ring-' + taskId);
-  const txt = document.getElementById('ttext-' + taskId);
-  if (ring) ring.style.strokeDashoffset = offset;
-  if (txt) txt.textContent = formatSeconds(remaining);
+  const remaining = timerRemaining[taskId]; const offset = 163 - (163 * (300 - remaining) / 300);
+  const ring = document.getElementById('ring-' + taskId); const txt = document.getElementById('ttext-' + taskId);
+  if (ring) ring.style.strokeDashoffset = offset; if (txt) txt.textContent = formatSeconds(remaining);
 }
-
-function pauseTimer(taskId) {
-  clearInterval(timerInterval);
-  pausedTimerId = taskId;
-  activeTimerId = null;
-  renderDailyTasks();
-}
-
-function resumeTimer(taskId) {
-  activeTimerId = taskId;
-  pausedTimerId = null;
-  runTick(taskId);
-  renderDailyTasks();
-}
-
-function stopTimer(taskId) {
-  clearInterval(timerInterval);
-  const elapsed = 300 - (timerRemaining[taskId] || 0);
-  if (!taskTimers[taskId]) taskTimers[taskId] = { totalSec: 0, sessions: 0 };
-  taskTimers[taskId].totalSec += elapsed;
-  timerRemaining[taskId] = 300;
-  activeTimerId = null;
-  pausedTimerId = null;
-  renderDailyTasks();
-  saveData();
-}
-
-function onTimerDone(taskId) {
-  clearInterval(timerInterval);
-  if (!taskTimers[taskId]) taskTimers[taskId] = { totalSec: 0, sessions: 0 };
-  taskTimers[taskId].totalSec += 300;
-  taskTimers[taskId].sessions++;
-  timerRemaining[taskId] = 300;
-  activeTimerId = null;
-  pausedTimerId = null;
-  toastTaskId = taskId;
-
-  // 소리 알림
-  playBeep();
-  // 브라우저 알림
-  if (Notification && Notification.permission === 'granted') {
-    new Notification('5분 완료! ⏰', { body: task ? task.text : '학습 완료', icon: './icon-192.png' });
-  }
-
-  renderDailyTasks();
-  saveData();
-}
-
-function completeTask(taskId) {
-  const task = dailyTasks.find(t => t.id === taskId);
-  if (task) {
-    task.done = true;
-    // 월 목표 세부항목도 완료 처리
-    if (task.goalId !== null) {
-      const goal = goals.find(g => g.id === task.goalId);
-      if (goal) {
-        const sub = goal.subtasks.find(s => s.id === task.subtaskId);
-        if (sub) sub.done = true;
-      }
-    }
-  }
-  if (activeTimerId === taskId) stopTimer(taskId);
-  expandedTaskId = null;
-  renderDailyTasks();
-  renderGoalCards();
-  updateDonut();
-  saveData(); saveHistory();
-}
-
-// 알림 권한 요청
-function requestNotificationPermission() {
-  if (Notification && Notification.permission === 'default') {
-    Notification.requestPermission();
-  }
-}
+function pauseTimer(taskId) { clearInterval(timerInterval); pausedTimerId = taskId; activeTimerId = null; renderDailyTasks(); }
+function resumeTimer(taskId) { activeTimerId = taskId; pausedTimerId = null; runTick(taskId); renderDailyTasks(); }
+function stopTimer(taskId) { clearInterval(timerInterval); const elapsed = 300 - (timerRemaining[taskId] || 0); if (!taskTimers[taskId]) taskTimers[taskId] = { totalSec: 0, sessions: 0 }; taskTimers[taskId].totalSec += elapsed; timerRemaining[taskId] = 300; activeTimerId = null; pausedTimerId = null; renderDailyTasks(); saveData(); }
+function onTimerDone(taskId) { clearInterval(timerInterval); if (!taskTimers[taskId]) taskTimers[taskId] = { totalSec: 0, sessions: 0 }; taskTimers[taskId].totalSec += 300; taskTimers[taskId].sessions++; timerRemaining[taskId] = 300; activeTimerId = null; pausedTimerId = null; playBeep(); if (Notification && Notification.permission === 'granted') { new Notification('5분 완료! ⏰', { body: '학습 완료', icon: './icon-192.png' }); } renderDailyTasks(); saveData(); }
+function requestNotificationPermission() { if (Notification && Notification.permission === 'default') { Notification.requestPermission(); } }
 
 // ===== SETTINGS =====
-function showSettings() {
-  renderDataStatus();
-  showScreen('settings-screen');
-}
-
+function showSettings() { renderDataStatus(); showScreen('settings-screen'); }
 function exportData() {
   try {
     const data = {};
@@ -1348,79 +1029,27 @@ function exportData() {
     }
     const json = JSON.stringify(data, null, 2);
     document.getElementById('export-area').value = json;
-    if (navigator.clipboard) {
-      navigator.clipboard.writeText(json).then(() => {
-        showSettingsMsg('export-msg', '✓ 클립보드에 복사됐어요! 메모장 등에 붙여넣기 해서 보관하세요.', 'ok');
-      }).catch(() => {
-        showSettingsMsg('export-msg', '아래 텍스트를 직접 복사해서 보관하세요.', 'ok');
-      });
-    } else {
-      showSettingsMsg('export-msg', '아래 텍스트를 직접 복사해서 보관하세요.', 'ok');
-    }
-  } catch(e) { showSettingsMsg('export-msg', '내보내기 실패: ' + e.message, 'err'); }
+    if (navigator.clipboard) { navigator.clipboard.writeText(json).then(() => { showSettingsMsg('export-msg', '✓ 복사됐어요!', 'ok'); }).catch(() => { showSettingsMsg('export-msg', '아래 텍스트를 직접 복사하세요.', 'ok'); }); } else { showSettingsMsg('export-msg', '아래 텍스트를 복사하세요.', 'ok'); }
+  } catch(e) { showSettingsMsg('export-msg', '실패: ' + e.message, 'err'); }
 }
+function showSettingsMsg(id, msg, type) { const el = document.getElementById(id); el.textContent = msg; el.className = 'settings-msg ' + type; setTimeout(() => { el.className = 'settings-msg'; }, 5000); }
+function renderDataStatus() { const el = document.getElementById('data-status'); el.innerHTML = `<div style="padding:8px 0;font-size:13px;">이번 달 목표 ${goals.length}개 저장됨</div>`; }
 
-function importData() {
-  const text = document.getElementById('import-area').value.trim();
-  if (!text) { showSettingsMsg('import-msg', '데이터를 먼저 붙여넣기 해주세요.', 'err'); return; }
-  try {
-    const data = JSON.parse(text);
-    let count = 0;
-    for (const key in data) {
-      if (key.startsWith('sp_')) { localStorage.setItem(key, data[key]); count++; }
-    }
-    showSettingsMsg('import-msg', `✓ ${count}개 항목을 복구했어요!`, 'ok');
-    loadData(); renderGoalCards(); updateDonut(); renderDailyTasks(); renderDataStatus();
-  } catch(e) {
-    showSettingsMsg('import-msg', '형식이 올바르지 않아요. 내보내기한 데이터를 그대로 붙여넣어 주세요.', 'err');
-  }
-}
-
-function clearImport() {
-  document.getElementById('import-area').value = '';
-  document.getElementById('import-msg').className = 'settings-msg';
-}
-
-function showSettingsMsg(id, msg, type) {
-  const el = document.getElementById(id);
-  el.textContent = msg; el.className = 'settings-msg ' + type;
-  setTimeout(() => { el.className = 'settings-msg'; }, 5000);
-}
-
-function renderDataStatus() {
-  const el = document.getElementById('data-status');
-  const keys = [];
-  for (let i = 0; i < localStorage.length; i++) {
-    const key = localStorage.key(i);
-    if (key && key.startsWith('sp_goals_')) keys.push(key);
-  }
-  if (keys.length === 0) {
-    el.innerHTML = '<div style="color:var(--gray-3);font-size:13px;">저장된 월별 데이터가 없어요</div>';
-    return;
-  }
-  el.innerHTML = keys.sort().map(key => {
-    const parts = key.replace('sp_goals_', '').split('-');
-    let count = 0;
-    try { count = JSON.parse(localStorage.getItem(key)).length; } catch(e) {}
-    return `<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--gray-2);font-size:13px;">
-      <span>${parts[0]}년 ${parts[1]}월</span>
-      <span style="color:var(--gray-3)">목표 ${count}개</span>
-    </div>`;
-  }).join('');
-}
-
-
+// ===== MONTHLY OVERVIEW =====
 function updateDonut() {
-  let total = 0, done = 0;
-  goals.forEach(g => { total += g.subtasks.length; done += g.subtasks.filter(s => s.done).length; });
-  const actualPct = total > 0 ? Math.round((done / total) * 100) : 0;
-  const expectedPct = Math.min(Math.round((daysPassed / daysInMonth) * 100), 100);
+  let sumCurrent = 0, sumTarget = 0;
+  goals.forEach(g => {
+    if (g.rangeTo > 0) {
+      sumCurrent += g.current;
+      sumTarget += g.rangeTo;
+    }
+  });
+  const actualPct = sumTarget > 0 ? Math.round((sumCurrent / sumTarget) * 100) : 0;
   const C = 2 * Math.PI * 62;
   document.getElementById('donut-actual').style.strokeDashoffset = C * (1 - actualPct / 100);
-  document.getElementById('donut-pct').textContent = actualPct + '%';
+  document.getElementById('donut-pct').textContent = Math.min(100, actualPct) + '%';
 }
 
-// GOAL CARDS
 function renderGoalCards() {
   const container = document.getElementById('goal-cards-container');
   container.innerHTML = '';
@@ -1429,58 +1058,37 @@ function renderGoalCards() {
     return;
   }
   goals.forEach(goal => {
-    const total = goal.subtasks.length;
-    const done = goal.subtasks.filter(s => s.done).length;
+    const total = goal.rangeTo || 0;
+    const done = goal.current || 0;
     const actualPct = total > 0 ? Math.round((done / total) * 100) : 0;
+    
     const card = document.createElement('div');
     card.className = 'goal-card';
-
-    const titleEl = document.createElement('div');
-    titleEl.className = 'goal-card-title';
-    titleEl.textContent = goal.name;
-    titleEl.onclick = () => showDetail(goal.id);
-
-    const editBtn = document.createElement('button');
-    editBtn.className = 'goal-action-btn edit';
-    editBtn.textContent = '✏️';
-    editBtn.onclick = () => openEditGoalModal(goal.id);
-
-    const delBtn = document.createElement('button');
-    delBtn.className = 'goal-action-btn del';
-    delBtn.textContent = '🗑️';
-    delBtn.onclick = () => openDeleteModal(goal.id);
-
-    const countEl = document.createElement('div');
-    countEl.className = 'goal-card-count';
-    countEl.textContent = done + '/' + total;
-
-    const header = document.createElement('div');
-    header.className = 'goal-card-header';
-    header.appendChild(titleEl);
-    header.appendChild(countEl);
-    header.appendChild(editBtn);
-    header.appendChild(delBtn);
-
-    const bar = document.createElement('div');
-    bar.className = 'goal-progress-bar';
-    bar.innerHTML = `<div class="gp-actual" style="width:${actualPct}%"></div>`;
-
-    const nums = document.createElement('div');
-    nums.className = 'goal-progress-nums';
-    nums.innerHTML = `<span class="goal-pct-actual">진행률 ${actualPct}%</span><span style="color:var(--gray-3);font-size:11px;">${done}/${total}</span>`;
-
-    card.appendChild(header);
-    card.appendChild(bar);
-    card.appendChild(nums);
+    card.innerHTML = `
+      <div class="goal-card-header">
+        <div class="goal-card-title" onclick="showDetail(${goal.id})">${goal.name}</div>
+        <div class="goal-card-count">${done}/${total}${goal.unit}</div>
+        <button class="goal-action-btn edit" onclick="openEditGoalModal(${goal.id})">✏️</button>
+        <button class="goal-action-btn del" onclick="openDeleteModal(${goal.id})">🗑️</button>
+      </div>
+      <div class="goal-progress-bar"><div class="gp-actual" style="width:${Math.min(100, actualPct)}%"></div></div>
+      <div class="goal-progress-nums">
+        <span class="goal-pct-actual">진행률 ${actualPct}%</span>
+        <span style="color:var(--gray-3);font-size:11px;">${done}/${total}${goal.unit}</span>
+      </div>
+    `;
     container.appendChild(card);
   });
 }
 
-// GOAL MODAL
+// ===== GOAL MODAL =====
 function openAddGoalModal() {
   goalModalMode = 'add'; goalModalEditId = null;
   document.getElementById('goal-modal-title').textContent = '새 목표 추가';
   document.getElementById('goal-modal-name').value = '';
+  document.getElementById('goal-modal-from').value = '';
+  document.getElementById('goal-modal-to').value = '';
+  document.getElementById('goal-modal-unit').value = '';
   document.getElementById('goal-modal').classList.add('show');
   setTimeout(() => document.getElementById('goal-modal-name').focus(), 100);
 }
@@ -1489,8 +1097,10 @@ function openEditGoalModal(id) {
   const goal = goals.find(g => g.id === id);
   document.getElementById('goal-modal-title').textContent = '목표 수정';
   document.getElementById('goal-modal-name').value = goal.name;
+  document.getElementById('goal-modal-from').value = goal.rangeFrom ?? '';
+  document.getElementById('goal-modal-to').value = goal.rangeTo ?? '';
+  document.getElementById('goal-modal-unit').value = goal.unit ?? '';
   document.getElementById('goal-modal').classList.add('show');
-  setTimeout(() => document.getElementById('goal-modal-name').focus(), 100);
 }
 function closeGoalModal(e) {
   if (e && e.target !== document.getElementById('goal-modal') && !e.target.classList.contains('modal-cancel')) return;
@@ -1499,25 +1109,31 @@ function closeGoalModal(e) {
 function submitGoalModal() {
   const name = document.getElementById('goal-modal-name').value.trim();
   if (!name) { document.getElementById('goal-modal-name').focus(); return; }
+  const rangeFrom = parseFloat(document.getElementById('goal-modal-from').value) || 0;
+  const rangeTo = parseFloat(document.getElementById('goal-modal-to').value) || 0;
+  const unit = document.getElementById('goal-modal-unit').value.trim();
+  
   if (goalModalMode === 'add') {
-    goals.push({ id: nextGoalId++, name, subtasks: [], nextId: 1 });
+    // 첫 시작 current 할당 (예: 1부터 시작이면 0부터, 50부터 시작이면 49를 기본 베이스로)
+    const startCurrent = rangeFrom > 0 ? (rangeFrom === 1 ? 0 : rangeFrom - 1) : 0;
+    goals.push({ id: nextGoalId++, name, rangeFrom, rangeTo, unit, current: startCurrent, history: [] });
   } else {
     const goal = goals.find(g => g.id === goalModalEditId);
     if (goal) {
-      goal.name = name;
-      if (currentDetailGoalId === goalModalEditId) document.getElementById('detail-title').textContent = name;
+      goal.name = name; goal.rangeFrom = rangeFrom; goal.rangeTo = rangeTo; goal.unit = unit;
+      if (currentDetailGoalId === goalModalEditId) renderDetailScreen();
     }
   }
   document.getElementById('goal-modal').classList.remove('show');
   renderGoalCards(); updateDonut(); saveData();
 }
 
-// DELETE MODAL
+// ===== DELETE MODAL =====
 function openDeleteModal(id) {
   deleteTargetId = id;
   const goal = goals.find(g => g.id === id);
   document.getElementById('delete-modal-title').textContent = `"${goal.name}" 삭제`;
-  document.getElementById('delete-modal-desc').textContent = '삭제하면 세부 목표도 모두 사라져요.';
+  document.getElementById('delete-modal-desc').textContent = '관련된 기록도 모두 사라집니다.';
   document.getElementById('delete-modal').classList.add('show');
 }
 function closeDeleteModal(e) {
@@ -1528,177 +1144,51 @@ function confirmDelete() {
   const targetId = Number(deleteTargetId);
   goals = goals.filter(g => g.id !== targetId);
   dailyTasks = dailyTasks.filter(t => t.goalId !== targetId);
-  [...dailyAddedKeys].forEach(k => {
-    if (k.startsWith(targetId + '_')) dailyAddedKeys.delete(k);
-  });
   document.getElementById('delete-modal').classList.remove('show');
   renderGoalCards(); updateDonut(); renderDailyTasks(); saveData();
 }
 
-// SUBTASK DETAIL
-function renderSubtaskList() {
+// ===== DETAIL SCREEN (History) =====
+function renderDetailScreen() {
   const goal = goals.find(g => g.id === currentDetailGoalId);
   document.getElementById('detail-title').textContent = goal.name;
-  const done = goal.subtasks.filter(s => s.done).length;
-  const total = goal.subtasks.length;
+  
+  document.getElementById('detail-from-input').value = goal.rangeFrom || '';
+  document.getElementById('detail-to-input').value = goal.rangeTo || '';
+  document.getElementById('detail-unit-input').value = goal.unit || '';
+
+  const pct = (goal.rangeTo > 0) ? Math.round((goal.current / goal.rangeTo) * 100) : 0;
   document.getElementById('detail-summary').innerHTML =
-    `<span>${done}</span> / ${total} 완료 &nbsp;·&nbsp; 진행률 <span>${total > 0 ? Math.round(done/total*100) : 0}%</span>`;
-  const list = document.getElementById('subtask-list');
+    `진행률 <span>${pct}%</span> &nbsp;·&nbsp; 현재 <span>${goal.current}</span> / ${goal.rangeTo} ${goal.unit}`;
+
+  const list = document.getElementById('detail-history-list');
   list.innerHTML = '';
-  goal.subtasks.forEach(sub => {
-    const div = document.createElement('div');
-    div.className = 'subtask-item';
-    div.innerHTML = `
-      <div class="subtask-check ${sub.done ? 'done' : ''}"></div>
-      <span class="subtask-text ${sub.done ? 'done' : ''}">${sub.text}</span>
-      <button class="subtask-del" onclick="deleteSubtask(event,${sub.id})">✕</button>
-    `;
-    div.onclick = (e) => { if (!e.target.classList.contains('subtask-del')) toggleSubtask(sub.id); };
-    list.appendChild(div);
-  });
-  document.getElementById('subtask-input').value = '';
-}
-function toggleSubtask(subId) {
-  const goal = goals.find(g => g.id === currentDetailGoalId);
-  const sub = goal.subtasks.find(s => s.id === subId);
-  sub.done = !sub.done;
-  dailyTasks.forEach(t => { if (t.goalId === goal.id && t.subtaskId === subId) t.done = sub.done; });
-  renderSubtaskList(); updateDonut(); saveData();
-}
-function deleteSubtask(e, subId) {
-  e.stopPropagation();
-  const goal = goals.find(g => g.id === currentDetailGoalId);
-  goal.subtasks = goal.subtasks.filter(s => s.id !== subId);
-  const key = goal.id + '_' + subId;
-  dailyAddedKeys.delete(key);
-  dailyTasks = dailyTasks.filter(t => !(t.goalId === goal.id && t.subtaskId === subId));
-  renderSubtaskList(); renderDailyTasks(); updateDonut(); saveData();
-}
-function addSubtask() {
-  const input = document.getElementById('subtask-input');
-  const text = input.value.trim();
-  if (!text) return;
-  const goal = goals.find(g => g.id === currentDetailGoalId);
-  goal.subtasks.push({id: goal.nextId++, text, done: false});
-  renderSubtaskList(); updateDonut(); saveData();
-  input.value = ''; input.focus();
-}
-document.getElementById('subtask-input').addEventListener('keydown', e => { if (e.key === 'Enter') addSubtask(); });
-document.getElementById('goal-modal-name').addEventListener('keydown', e => { if (e.key === 'Enter') submitGoalModal(); });
-document.getElementById('drawer-direct-input').addEventListener('keydown', e => { if (e.key === 'Enter') addDirectTask(); });
-
-// CALENDAR & DAY HISTORY
-const STORAGE_KEY_HISTORY = 'sp_history'; // { "2026-3-27": [{text,tag,done}, ...] }
-
-function loadHistory() {
-  try {
-    const h = localStorage.getItem(STORAGE_KEY_HISTORY);
-    return h ? JSON.parse(h) : {};
-  } catch(e) { return {}; }
-}
-function saveHistory() {
-  try {
-    const history = loadHistory();
-    if (dailyTasks.length > 0) {
-      history[todayKey] = dailyTasks.map(t => ({text: t.text, tag: t.tag, done: t.done}));
-      localStorage.setItem(STORAGE_KEY_HISTORY, JSON.stringify(history));
-    }
-  } catch(e) {}
-}
-
-// CALENDAR
-let calViewYear = currentYear;
-let calViewMonth = currentMonth;
-
-function showCalendar() {
-  calViewYear = currentYear;
-  calViewMonth = currentMonth;
-  renderCalGrid();
-  showScreen('calendar-screen');
-}
-
-function moveCalMonth(dir) {
-  calViewMonth += dir;
-  if (calViewMonth > 11) { calViewMonth = 0; calViewYear++; }
-  if (calViewMonth < 0) { calViewMonth = 11; calViewYear--; }
-  renderCalGrid();
-}
-
-function renderCalGrid() {
-  document.getElementById('cal-title').textContent = calViewYear + '년 ' + MONTHS_KR[calViewMonth];
-  const grid = document.getElementById('cal-grid');
-  grid.innerHTML = '';
-  const history = loadHistory();
-  const viewDaysInMonth = new Date(calViewYear, calViewMonth + 1, 0).getDate();
-  const firstDay = new Date(calViewYear, calViewMonth, 1).getDay();
-
-  for (let i = 0; i < firstDay; i++) {
-    const el = document.createElement('div');
-    el.className = 'cal-day empty';
-    grid.appendChild(el);
-  }
-  for (let d = 1; d <= viewDaysInMonth; d++) {
-    const el = document.createElement('div');
-    const dow = (firstDay + d - 1) % 7;
-    const key = calViewYear + '-' + (calViewMonth + 1) + '-' + d;
-    const isToday = d === today.getDate() && calViewMonth === currentMonth && calViewYear === currentYear;
-    const hasRecord = !!history[key] || (isToday && dailyTasks.length > 0);
-    let cls = 'cal-day';
-    if (isToday) cls += ' today';
-    if (dow === 0) cls += ' sunday';
-    if (dow === 6) cls += ' saturday';
-    if (hasRecord) cls += ' has-record';
-    el.className = cls;
-    el.textContent = d;
-    el.onclick = () => showDayRecord(d, key, isToday);
-    grid.appendChild(el);
-  }
-}
-
-function showDayRecord(day, key, isToday) {
-  const DAYS_KR2 = ['일','월','화','수','목','금','토'];
-  const dow = new Date(calViewYear, calViewMonth, day).getDay();
-  document.getElementById('dayrecord-date').textContent = day;
-  document.getElementById('dayrecord-sub').textContent =
-    DAYS_KR2[dow] + '요일 · ' + MONTHS_KR[calViewMonth] + ' ' + calViewYear;
-
-  const list = document.getElementById('dayrecord-list');
-  list.innerHTML = '';
-
-  let tasks = [];
-  if (isToday) {
-    tasks = dailyTasks.map(t => ({text: t.text, tag: t.tag, done: t.done}));
+  if (!goal.history || goal.history.length === 0) {
+    list.innerHTML = '<div style="color:var(--gray-3);font-size:13px;padding:20px 10px;text-align:center;">아직 학습 기록이 없어요</div>';
   } else {
-    const history = loadHistory();
-    tasks = history[key] || [];
-  }
-
-  if (tasks.length === 0) {
-    list.innerHTML = '<div class="dayrecord-empty"><span class="icon">📭</span>이 날의 학습 기록이 없어요</div>';
-  } else {
-    tasks.forEach(t => {
+    // 최신 기록이 위로 오게
+    [...goal.history].reverse().forEach(h => {
       const div = document.createElement('div');
-      div.className = 'record-task-item';
-      div.innerHTML = `
-        <div class="record-check ${t.done ? 'done' : 'undone'}"></div>
-        <span class="record-task-text ${t.done ? 'done' : ''}">${t.text}</span>
-      `;
+      div.className = 'history-item';
+      div.innerHTML = `<span class="history-date">${h.date}</span><span class="history-range">${h.from}${goal.unit} ~ ${h.to}${goal.unit}</span>`;
       list.appendChild(div);
     });
   }
-  showScreen('dayrecord-screen');
+}
+function saveDetailRange() {
+  const goal = goals.find(g => g.id === currentDetailGoalId);
+  goal.rangeFrom = parseFloat(document.getElementById('detail-from-input').value) || 0;
+  goal.rangeTo = parseFloat(document.getElementById('detail-to-input').value) || 0;
+  goal.unit = document.getElementById('detail-unit-input').value.trim();
+  renderDetailScreen(); updateDonut(); renderGoalCards(); saveData();
+  alert('저장되었습니다.');
 }
 
+document.getElementById('drawer-direct-input').addEventListener('keydown', e => { if (e.key === 'Enter') addDirectTask(); });
+document.getElementById('goal-modal-name').addEventListener('keydown', e => { if (e.key === 'Enter') submitGoalModal(); });
+
 init();
-</script>
-<script>
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js').then(reg => {
-      console.log('SW registered');
-    }).catch(err => console.log('SW error', err));
-  });
-}
+
 </script>
 </body>
 </html>
